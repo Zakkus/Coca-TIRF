@@ -1,6 +1,6 @@
 #include"SDL_init.h"
 
-SDL_Window* create_window()
+SDL_Window* createWindow()
 {
 	SDL_Window *window;
 	//Start SDL
@@ -16,19 +16,21 @@ SDL_Window* create_window()
 	return window;
 }
 
-SDL_Surface* load_image(char* path)
+SDL_Surface* loadImage(char* path)
 {
 	SDL_Surface *image;
 	image = IMG_Load(path);
 	return image;
 }
 
-void display_image(SDL_Window* window, SDL_Surface* image)
+void displayImage(SDL_Window* window, SDL_Surface* image)
 {
 	SDL_Renderer *renderer = SDL_CreateRenderer(window, -1, 0);
 	SDL_Texture *texture = SDL_CreateTextureFromSurface(renderer, image);
 	SDL_RenderCopy(renderer, texture, NULL, NULL);
 	SDL_RenderPresent(renderer);
+
+	SDL_Delay(5000);
 }
 
 //pompé sur le site du zéro
@@ -104,4 +106,15 @@ void setPixel(SDL_Surface *surface, int x, int y, Uint32 pixel)
 			*(Uint32 *)p = pixel;
 			break;
 	}
+}
+
+Uint8* getRGB(SDL_Surface* image, int i, int j)
+{
+	Uint8 r, g, b;
+	Uint8 rgb[3];
+	SDL_GetRGB(getPixel(image, i, j), image->format, &r, &g, &b);
+	rgb[0] = r;
+	rgb[1] = g;
+	rgb[2] = b;
+	return rgb;
 }

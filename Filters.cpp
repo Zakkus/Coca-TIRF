@@ -1,19 +1,165 @@
-#include<Filters.h>
+#include"Filters.h"
 
 void redFilter(SDL_Surface* image)
 {
 	int width = image->w;
 	int height = image->h;
-	Uint8 r, g, b;
+	Uint8* rgb;
+	SDL_Surface* tmp = new SDL_Surface(*image);
 
 	for (int i = 0; i < width; i++)
 		for (int j = 0; j < height; j++)
 		{
-			SDL_GetRGB(getPixel(image, i, j), image->format, &r, &g, &b);
-			if (!(g <= 100 && b <= 100 && r > 100))
-			{
-				//std::cout << "red: " << r << " green: " << g << " blue: " << b << std::endl;
+			rgb = getRGB(tmp, i, j);
+			//if (rgb[1] <= 100 && rgb[2] <= 100 && rgb[0] > 100)
+			//	setPixel(image, i, j, SDL_MapRGB(image->format, 255, 0, 0));
+			if (!(rgb[1] <= 100 && rgb[2] <= 100 && rgb[0] > 100))
+				setPixel(image, i, j, SDL_MapRGB(image->format, 0, 0, 0));
+			if (rgb[1] >= 200 && rgb[2] >= 200 && rgb[0] >= 200)
 				setPixel(image, i, j, SDL_MapRGB(image->format, 255, 255, 255));
+		}
+}
+
+void grayScale(SDL_Surface* image)
+{
+	int width = image->w;
+	int height = image->h;
+	double gray;
+	SDL_Surface* tmp = new SDL_Surface(*image);
+	Uint8* rgb;
+	for (int i = 0; i < width; i++)
+		for (int j = 0; j < height; j++)
+		{
+			rgb = getRGB(tmp, i, j);
+			gray = 0.299 * rgb[0] + 0.587 * rgb[1] + 0.114 * rgb[2];
+			setPixel(image, i, j, SDL_MapRGB(image->format,
+											 (Uint8)gray,
+											 (Uint8)gray,
+											 (Uint8)gray));
+		}
+}
+
+//marche pas trop mal, algo du prof
+void sobelFilter(SDL_Surface* image)
+{
+	int width = image->w;
+	int height = image->h;
+	short gray, sx, sy;
+	SDL_Surface* tmp = new SDL_Surface(*image);
+
+	for (int i = 1; i < width - 1; i++)
+		for (int j = 1; j < height - 1; j++)
+		{
+			//on considère que l'image est en niveaux de gris
+
+			const char x_op[3][3] = { { -1, 0, 1 },
+									  { -2, 0, 2 },
+								      { -1, 0, 1 } };
+
+			const char y_op[3][3] = { { 1, 2, 1 },
+									  { 0, 0, 0 },
+								 	  { -1, -2, -1 } };
+			sx = 0;
+			sy = 0;
+			for (short x = 0; x < 3; x++)
+				for (short y = 0; y < 3; y++)
+				{
+					sx += getRGB(tmp, x + i, y + j)[0] * x_op[x][y];
+					sy += getRGB(tmp, x + i, y + j)[0] * y_op[x][y];
+				}
+			
+			gray = std::abs(sx) + std::abs(sy);
+
+			/*if (gray>200)
+				gray = 255;
+			else if (gray<100)
+				gray = 0;*/
+			gray = 255 - gray;
+
+			setPixel(image, i, j, SDL_MapRGB(image->format,
+				(Uint8)gray,
+				(Uint8)gray,
+				(Uint8)gray));
+		}
+}
+
+void laplaceFilter(SDL_Surface* image)
+{
+	int width = image->w;
+	int height = image->h;
+	short gray;
+	SDL_Surface* tmp = new SDL_Surface(*image);
+
+	for (int i = 1; i < width - 1; i++)
+		for (int j = 1; j < height - 1; j++)
+		{
+			//on considère que l'image est en niveaux de gris
+
+			const char x_op[3][3] = { {  0, -1,  0 },
+									  { -1,  5, -1 },
+									  {  0, -1,  0 } };
+
+			gray = 0;
+			for (short x = 0; x < 3; x++)
+				for (short y = 0; y < 3; y++)
+					gray += getRGB(tmp, x + i, y + j)[0] * x_op[x][y];
+
+			setPixel(image, i, j, SDL_MapRGB(image->format,
+				(Uint8)gray,
+				(Uint8)gray,
+				(Uint8)gray));
+		}
+}
+
+void findRectangle(SDL_Surface* image)
+{
+	//on considère une image couleur passée en rouge
+	int width = image->w;
+	int height = image->h;
+
+	Uint8 *rgb, *rgb1, *rgb2, *rgb3, *rgb4, *rgb5, *rgb6;
+	SDL_Surface* tmp = new SDL_Surface(*image);
+	std::list<int> coordsList = std::list<int>();
+	for (int i = 1; i < width - 1; i++)
+		for (int j = 1; j < height - 1; j++)
+		{
+			rgb = getRGB(tmp, i, j);
+			if (rgb[1] <= 100 && rgb[2] <= 100 && rgb[0] > 100)
+			{
+				rgb1 = getRGB(tmp, i - 1, j - 1);
+				rgb2 = getRGB(tmp, i - 1, j);
+				rgb3 = getRGB(tmp, i, j - 1);
+				rgb4 = getRGB(tmp, i + 1, j + 1);
+				rgb5 = getRGB(tmp, i + 1, j);
+				rgb6 = getRGB(tmp, i, j + 1);
+				if (!(rgb1[1] <= 100 && rgb1[2] <= 100 && rgb1[0] > 100) &&
+					!(rgb2[1] <= 100 && rgb2[2] <= 100 && rgb2[0] > 100) &&
+					!(rgb3[1] <= 100 && rgb3[2] <= 100 && rgb3[0] > 100) && 
+					 (rgb4[1] <= 100 && rgb4[2] <= 100 && rgb4[0] > 100) &&
+					 (rgb5[1] <= 100 && rgb5[2] <= 100 && rgb5[0] > 100) &&
+					 (rgb6[1] <= 100 && rgb6[2] <= 100 && rgb6[0] > 100))
+				{
+					coordsList.push_back(i);
+					coordsList.push_back(j);
+					break;
+				}
+				if (!(rgb4[1] <= 100 && rgb4[2] <= 100 && rgb4[0] > 100) &&
+					!(rgb5[1] <= 100 && rgb5[2] <= 100 && rgb5[0] > 100) &&
+					!(rgb6[1] <= 100 && rgb6[2] <= 100 && rgb6[0] > 100)/* &&
+					 (rgb1[1] <= 100 && rgb1[2] <= 100 && rgb1[0] > 100) &&
+					 (rgb2[1] <= 100 && rgb2[2] <= 100 && rgb2[0] > 100) &&
+					 (rgb3[1] <= 100 && rgb3[2] <= 100 && rgb3[0] > 100)*/)
+				{
+					int y = coordsList.back();
+					coordsList.pop_back();
+					int x = coordsList.back();
+					coordsList.pop_back();
+					Hline(image, x, y, j - y);
+					Vline(image, x, j, i - x);
+					Hline(image, i, j, j - y);
+					Vline(image, i, y, j - x);
+					break;
+				}
 			}
 		}
 }
