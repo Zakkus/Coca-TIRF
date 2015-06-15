@@ -20,6 +20,30 @@ void redFilter(SDL_Surface* image)
 		}
 }
 
+//Red Filter avec HSV
+void redFilter2(SDL_Surface* img)
+{
+	int width = image->w;
+	int height = image->h;
+	Uint8* rgb;
+	SDL_Surface* tmp = new SDL_Surface(*image);
+	int h = 0, s = 0, v = 0;
+	
+	for (int i = 0; i < width; i++)
+		for (int j = 0; j < height; j++)
+		{
+			rgb = getRGB(tmp, i, j);
+			rgb_to_hsv(rgb[0], rgb[1], rgb[2], h, s, v);
+			if (h < 300 && h > 60)
+				s = 0;
+			int r = 0;
+			int g = 0;
+			int b = 0;
+			hsv_to_rgb(h, s, v, r, g, b);
+			setPixel(img, i, j,SDL_MapRGB(image->format, (Uint8)r, (Uint8)g, (Uint8)b));
+		}
+}
+
 void grayScale(SDL_Surface* image)
 {
 	int width = image->w;
@@ -52,11 +76,11 @@ void sobelFilter(SDL_Surface* image)
 		{
 			//on considère que l'image est en niveaux de gris
 
-			const char x_op[3][3] = { { -1, 0, 1 },
+			const int x_op[3][3] = { { -1, 0, 1 },
 									  { -2, 0, 2 },
 								      { -1, 0, 1 } };
 
-			const char y_op[3][3] = { { 1, 2, 1 },
+			const int y_op[3][3] = { { 1, 2, 1 },
 									  { 0, 0, 0 },
 								 	  { -1, -2, -1 } };
 			sx = 0;
@@ -162,4 +186,48 @@ void findRectangle(SDL_Surface* image)
 				}
 			}
 		}
+}
+
+//erode et dilate ont besoin d'une SDL_Surface binarisée
+
+void erode(SDL_Surface* img)
+{
+	int width = image->w;
+	int height = image->h;
+	SDL_Surface* tmp = new SDL_Surface(*img);
+	for (int j = 1; j < height - 1; j++)
+	{
+		for (int i = 1; i < width - 1; i++)
+		{
+			int gray = 0;
+			for (int x = -1; x <= 1; x++)
+				for (int y = -1; y <= 1; y++)
+				{
+					gray += getRGB(tmp, i + x, j + y);
+				}
+			if (gray > 0)
+				setPixel(img, i, j, SDL_MapRGB(img->format, (Uint8)255, (Uint8)255, (Uint8)255));
+		}
+	}
+}
+
+void dilate(SDL_Surface* img)
+{
+	int width = image->w;
+	int height = image->h;
+	SDL_Surface* tmp = new SDL_Surface(*img);
+	for (int j = 1; j < height - 1; j++)
+	{
+		for (int i = 1; i < width - 1; i++)
+		{
+			int gray = 1;
+			for (int x = -1; x <= 1; x++)
+				for (int y = -1; y <= 1; y++)
+				{
+					gray *= getRGB(tmp, i + x, j + y);
+				}
+			if (gray == 0)
+				setPixel(img, i, j, SDL_MapRGB(img->format, (Uint8)255, (Uint8)255, (Uint8)255));
+		}
+	}
 }
