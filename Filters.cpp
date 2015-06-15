@@ -44,6 +44,25 @@ void redFilter2(SDL_Surface* img)
 		}
 }
 
+//Passe le rouge en noir et le reste en blanc
+void Red_to_Black(SDL_Surface* img)
+{
+	int width = image->w;
+	int height = image->h;
+	Uint8* rgb;
+	SDL_Surface* tmp = new SDL_Surface(*image);
+	
+	for (int i = 0; i < width; i++)
+		for (int j = 0; j < height; j++)
+		{
+			rgb = getRGB(tmp, i, j);
+			if (rgb[0] == 0)
+				setPixel(img, i, j,SDL_MapRGB(image->format, 255, 255, 255));
+			else
+				setPixel(img, i, j,SDL_MapRGB(image->format, 0, 0, 0));
+		}
+}
+
 void grayScale(SDL_Surface* image)
 {
 	int width = image->w;
