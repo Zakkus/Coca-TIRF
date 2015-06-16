@@ -257,7 +257,7 @@ void MaxCompo(SDL_Surface* image)
 {
     int width = image->w;
     int height = image->h;
-    SDL_Surface* tmp = new SDL_Surface(*img);
+    SDL_Surface* tmp = new SDL_Surface(*image);
     int number = 0;
     for (int i = 0; i < width; i++)
         for (int j = 0; j < height; j++)
@@ -278,14 +278,14 @@ void Compo(SDL_Surface* tmp, SDL_Surface* image, int i, int j, int num)
     int height = image->h;
     if (getRGB(tmp,i,j)[0] == 0)
     {
-        setPixel(img, i, j, SDL_MapRGB(img->format, num, 0, 0));
+        setPixel(image, i, j, SDL_MapRGB(image->format, num, 0, 0));
         if (i - 1 >= 0)
-            Compo(tmp, img, i -1, j, num);
+            Compo(tmp, image, i -1, j, num);
         if (i + 1 < width)
-            Compo(tmp, img, i + 1, j, num);
+            Compo(tmp, image, i + 1, j, num);
         if (j - 1 >= 0)
-            Compo(tmp, img, i, j - 1, num);
+            Compo(tmp, image, i, j - 1, num);
         if (j + 1 < height)
-            Compo(tmp, img, i, j + 1, num);
+            Compo(tmp, image, i, j + 1, num);
     }
 }
