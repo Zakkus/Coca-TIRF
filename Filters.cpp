@@ -222,7 +222,7 @@ void erode(SDL_Surface* img)
 			for (int x = -1; x <= 1; x++)
 				for (int y = -1; y <= 1; y++)
 				{
-					gray += getRGB(tmp, i + x, j + y);
+					gray += getRGB(tmp, i + x, j + y)[0];
 				}
 			if (gray > 0)
 				setPixel(img, i, j, SDL_MapRGB(img->format, (Uint8)255, (Uint8)255, (Uint8)255));
@@ -243,10 +243,49 @@ void dilate(SDL_Surface* img)
 			for (int x = -1; x <= 1; x++)
 				for (int y = -1; y <= 1; y++)
 				{
-					gray *= getRGB(tmp, i + x, j + y);
+					gray *= getRGB(tmp, i + x, j + y)[0];
 				}
 			if (gray == 0)
 				setPixel(img, i, j, SDL_MapRGB(img->format, (Uint8)255, (Uint8)255, (Uint8)255));
 		}
+	}
+}
+
+//Image binarisée donne un numéro sur chaque composante
+
+void MaxCompo(SDL_Surface* img)
+{
+	int width = image->w;
+	int height = image->h;
+	SDL_Surface* tmp = new SDL_Surface(*img);
+	int number = 0;
+	for (int i = 0; i < width; i++)
+		for (int j = 0; j < height; j++)
+		{
+			if (getRGB(tmp, i, j)[0] == 0)
+			{
+				number++;
+				Compo(tmp, img, i, j, number);
+			}
+		}
+}
+
+//num ne peut pas passer le 253
+
+void Compo(SDL_Surface* tmp, SDL_Surface* img, int i, int j, int num)
+{
+	int width = image->w;
+	int height = image->h;
+	if (getRGB(tmp,i,j)[0] == 0)
+	{
+		setPixel(img, i, j, SDL_MapRGB(img->format, num, 0, 0));
+		if (i - 1 >= 0)
+			Compo(tmp, img, i -1, j, num);
+		if (i + 1 < width)
+			Compo(tmp, img, i + 1, j, num);
+		if (j - 1 >= 0)
+			Compo(tmp, img, i, j - 1, num);
+		if (j + 1 < height)
+			Compo(tmp, img, i, j + 1, num);
 	}
 }
