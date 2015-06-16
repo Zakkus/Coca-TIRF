@@ -250,3 +250,42 @@ void dilate(SDL_Surface* image)
         }
     }
 }
+
+//Image binarisée donne un numéro sur chaque composante
+
+void MaxCompo(SDL_Surface* image)
+{
+    int width = image->w;
+    int height = image->h;
+    SDL_Surface* tmp = new SDL_Surface(*img);
+    int number = 0;
+    for (int i = 0; i < width; i++)
+        for (int j = 0; j < height; j++)
+        {
+            if (getRGB(tmp, i, j)[0] == 0)
+            {
+                number++;
+                Compo(tmp, image, i, j, number);
+            }
+        }
+}
+
+//num ne peut pas passer le 253
+
+void Compo(SDL_Surface* tmp, SDL_Surface* image, int i, int j, int num)
+{
+    int width = image->w;
+    int height = image->h;
+    if (getRGB(tmp,i,j)[0] == 0)
+    {
+        setPixel(img, i, j, SDL_MapRGB(img->format, num, 0, 0));
+        if (i - 1 >= 0)
+            Compo(tmp, img, i -1, j, num);
+        if (i + 1 < width)
+            Compo(tmp, img, i + 1, j, num);
+        if (j - 1 >= 0)
+            Compo(tmp, img, i, j - 1, num);
+        if (j + 1 < height)
+            Compo(tmp, img, i, j + 1, num);
+    }
+}
