@@ -18,7 +18,10 @@ int main(int argc, char* argv[])
     //SDL_Surface* image = loadImage("D:/Work/TIRF/can.jpg");
     redFilter(image);
 
-    countRedWhiteRation(image);
+    Red_to_Black(image);
+
+    erode(image, 2);
+    dilate(image, 2);
     displayImage(createWindow(), image);
 
     return 0;
