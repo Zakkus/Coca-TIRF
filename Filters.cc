@@ -209,7 +209,7 @@ void findRectangle(SDL_Surface* image)
 
 //erode et dilate ont besoin d'une SDL_Surface binarisée
 
-void erode(SDL_Surface* image)
+void erode(SDL_Surface* image, int dim)
 {
     int width = image->w;
     int height = image->h;
@@ -219,8 +219,8 @@ void erode(SDL_Surface* image)
         for (int i = 1; i < width - 1; i++)
         {
             int gray = 0;
-            for (int x = -1; x <= 1; x++)
-                for (int y = -1; y <= 1; y++)
+            for (int x = -dim/2; x <= dim/2; x++)
+                for (int y = -dim/2; y <= dim/2; y++)
                 {
                     gray += getRGB(tmp, i + x, j + y)[0];
                 }
@@ -230,7 +230,7 @@ void erode(SDL_Surface* image)
     }
 }
 
-void dilate(SDL_Surface* image)
+void dilate(SDL_Surface* image, int dim)
 {
     int width = image->w;
     int height = image->h;
@@ -240,8 +240,8 @@ void dilate(SDL_Surface* image)
         for (int i = 1; i < width - 1; i++)
         {
             int gray = 1;
-            for (int x = -1; x <= 1; x++)
-                for (int y = -1; y <= 1; y++)
+            for (int x = -dim/2; x <= dim/2; x++)
+                for (int y = -dim/2; y <= dim/2; y++)
                 {
                     gray *= getRGB(tmp, i + x, j + y)[0];
                 }
@@ -279,13 +279,110 @@ void Compo(SDL_Surface* tmp, SDL_Surface* image, int i, int j, int num)
     if (getRGB(tmp,i,j)[0] == 0)
     {
         setPixel(image, i, j, SDL_MapRGB(image->format, num, 0, 0));
-        if (i - 1 >= 0)
+        if (i - 1 > 0)
             Compo(tmp, image, i -1, j, num);
         if (i + 1 < width)
             Compo(tmp, image, i + 1, j, num);
-        if (j - 1 >= 0)
+        if (j - 1 > 0)
             Compo(tmp, image, i, j - 1, num);
         if (j + 1 < height)
             Compo(tmp, image, i, j + 1, num);
     }
+}
+
+int ChooseCompo(SDL_Surface* img)
+{
+	int maxcompo = 0;
+	int n = 0;
+	int width = image->w;
+    int height = image->h;
+	int compo = 0;
+	int many = 0;
+	for (int i = 0; i < width; i++)
+		for (int j = 0; j < height; j++)
+		{
+			if (compo != getRGB(img, i, j)[0])
+			{
+				many = 1;
+				compo = getRGB(img, i,j)[0];
+			}
+			else
+			{
+				many++;
+				if (n < many)
+				{
+					n = many;
+					maxcompo = compo;
+				}
+			}
+		}
+}
+
+void ColorCompo(SDL_Surface* img, int compo)
+{
+	SDL_Surface* tmp = new SDL_Surface(*img);
+	int width = image->w;
+    int height = image->h;
+	for (int i = 0; i < width; i++)
+		for (int j = 0; j < height; j++)
+		{
+			if (getRGB(tmp, i, j)[0] == compo)
+				setPixel(img, i, j, SDL_MapRGB(image->format, 0,0,0));
+			else
+				setPixel(img, i, j, SDL_MapRGB(image->format, 255, 255, 255));
+		}
+}
+
+//Dis si la composante à des dimensions qui correspondent à celle d'une canette
+bool CheckCompo(int l, int L)
+{
+	return l * 2 <= L && l * 1.5 >= L;
+}
+
+int getL(SDL_Surface* img, int x, int y)
+{
+	int width = image->w;
+	int i;
+	for (i = 0; i + x < width; i++)
+	{
+		if (getRGB(img, x+i, y)[0] != 0)
+			break;
+	}
+	return i;
+}
+
+int getl(SDL_Surface* img, int x, int y)
+{
+    int height = image->h;
+	int j;
+	for (j = 0; y + j < height; j++)
+	{
+		if (getRGB(img, x, y + j)[0] != 0)
+			break;
+	}
+}
+
+//Supposition qu'il n'y a qu'une composante affichée et qu'elle est liée(aucun blanc à l'intérieur passage préalable d'une ouverture très grande)
+void TraceRekt(SDL_Surface* img)//Peut etre prendre une seconde image étant celle de base sur laquelle tracer le rect
+{
+	int width = image->w;
+    int height = image->h;
+	for (int i = 0; i < width; i++)
+		for (int j = 0; j < height; j++)
+		{
+			if (getRGB(img, i, j)[0] == 0)
+			{
+				int L = getL(img, i, j);
+				int l = getl(img, i, j);
+				if (CheckCompo(l, L))
+				{
+					Hline(img, i, j, i + l);
+					Hline(img, i, j + L, l);
+					Vline(img, i, j, L);
+					Vline(img, i + l, j, L);
+				}
+				break;
+			}
+				
+		}
 }
