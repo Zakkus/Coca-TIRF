@@ -215,7 +215,7 @@ void erode(SDL_Surface* image, SDL_Surface* tmp, int dim)
     int height = image->h;
     //SDL_Surface* tmp = new SDL_Surface(*image);
 	std::vector<Uint8> rgb = std::vector<Uint8>();
-    for (int j = -dim; j < height - dim; j++)
+    for (int j = dim; j < height - dim; j++)
     {
         for (int i = dim; i < width - dim; i++)
         {
