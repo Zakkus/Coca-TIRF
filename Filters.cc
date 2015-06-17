@@ -222,6 +222,7 @@ void erode(SDL_Surface* image, int dim)
 			rgb = getRGB(tmp, i, j);
 			if (rgb[0] == rgb[1] && rgb[1] == rgb[2] && rgb[0] == 255)
 			{
+				std::cout << i << j << std::endl;
 				for (int x = -1; x <= 1; x++)
 					for (int y = -1; y <= 1; y++)
 					{
