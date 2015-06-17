@@ -246,7 +246,7 @@ void dilate(SDL_Surface* image, int dim)
                     gray *= getRGB(tmp, i + x, j + y)[0];
                 }
             if (gray == 0)
-                setPixel(image, i, j, SDL_MapRGB(image->format, (Uint8)255, (Uint8)255, (Uint8)255));
+                setPixel(image, i, j, SDL_MapRGB(image->format, (Uint8)0, (Uint8)0, (Uint8)0));
         }
     }
 }
