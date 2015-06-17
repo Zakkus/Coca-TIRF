@@ -8,6 +8,7 @@ int main(int argc, char* argv[])
     //SDL_Surface* image = loadImage("D:/Work/TIRF/Coca/Coca/simple/HPIM4430.JPG");
     //SDL_Surface* image = loadImage("D:/Work/TIRF/Coca/Coca/simple/HPIM4433.JPG");
     SDL_Surface* image = loadImage(argv[1]);
+	SDL_Surface* save = loadImage(argv[1]);
     //SDL_Surface* image = loadImage("D:/Work/TIRF/Coca/Coca/moins_simple/HPIM4422.JPG");
     //grayScale(image);
     //sobelFilter(image);
@@ -20,8 +21,8 @@ int main(int argc, char* argv[])
 
     Red_to_Black(image);
 
-    erode(image, 2);
-    dilate(image, 2);
+    erode(image, save, 2);
+    dilate(image, save, 2);
     displayImage(createWindow(), image);
 
     return 0;
