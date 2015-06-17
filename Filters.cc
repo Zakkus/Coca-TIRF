@@ -215,16 +215,16 @@ void erode(SDL_Surface* image, SDL_Surface* tmp, int dim)
     int height = image->h;
     //SDL_Surface* tmp = new SDL_Surface(*image);
 	std::vector<Uint8> rgb = std::vector<Uint8>();
-    for (int j = 1; j < height - 1; j++)
+    for (int j = -dim; j < height - dim; j++)
     {
-        for (int i = 1; i < width - 1; i++)
+        for (int i = dim; i < width - dim; i++)
         {
 			rgb = getRGB(tmp, i, j);
 			if (rgb[0] == rgb[1] && rgb[1] == rgb[2] && rgb[0] == 255)
 			{
-				std::cout << i << j << std::endl;
-				for (int x = -1; x <= 1; x++)
-					for (int y = -1; y <= 1; y++)
+				//std::cout << i << j << std::endl;
+				for (int x = -dim; x <= dim; x++)
+					for (int y = -dim; y <= dim; y++)
 					{
 						setPixel(image, x + i, y + j, SDL_MapRGB(image->format, 255, 255, 255));
 					}
@@ -239,16 +239,16 @@ void dilate(SDL_Surface* image, SDL_Surface* tmp, int dim)
     int height = image->h;
     //SDL_Surface* tmp = new SDL_Surface(*image);
 	std::vector<Uint8> rgb = std::vector<Uint8>();
-    for (int j = 1; j < height - 1; j++)
+    for (int j = dim; j < height - dim; j++)
     {
-        for (int i = 1; i < width - 1; i++)
+        for (int i = dim; i < width - dim; i++)
         {
 			rgb = getRGB(tmp, i, j);
             if (rgb[0] == rgb[1] && rgb[1] == rgb[2] && rgb[0] == 0)
 			{
-				for (int x = -1; x <= 1; x++)
+				for (int x = -dim; x <= dim; x++)
 				{
-					for (int y = -1; y <= 1; y++)
+					for (int y = -dim; y <= dim; y++)
 					{
 						setPixel(image, x + i, y + j, SDL_MapRGB(image->format, 0, 0, 0));
 					}
