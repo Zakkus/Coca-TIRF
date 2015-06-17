@@ -219,11 +219,13 @@ void erode(SDL_Surface* image, int dim)
         for (int i = dim/2; i < width - dim/2; i++)
         {
 			if (getRGB(tmp, i, j)[0] ==  255)
+			{
 				for (int x = -dim/2; x <= dim/2; x++)
 					for (int y = -dim/2; y <= dim/2; y++)
 					{
 						setPixel(image, x + i, y + j, SDL_MapRGB(image->format, 255, 255, 255));
 					}
+			}
         }
     }
 }
@@ -290,8 +292,8 @@ int ChooseCompo(SDL_Surface* img)
 {
 	int maxcompo = 0;
 	int n = 0;
-	int width = image->w;
-    int height = image->h;
+	int width = img->w;
+    int height = img->h;
 	int compo = 0;
 	int many = 0;
 	for (int i = 0; i < width; i++)
@@ -317,15 +319,15 @@ int ChooseCompo(SDL_Surface* img)
 void ColorCompo(SDL_Surface* img, int compo)
 {
 	SDL_Surface* tmp = new SDL_Surface(*img);
-	int width = image->w;
-    int height = image->h;
+	int width = img->w;
+    int height = img->h;
 	for (int i = 0; i < width; i++)
 		for (int j = 0; j < height; j++)
 		{
 			if (getRGB(tmp, i, j)[0] == compo)
-				setPixel(img, i, j, SDL_MapRGB(image->format, 0,0,0));
+				setPixel(img, i, j, SDL_MapRGB(img->format, 0,0,0));
 			else
-				setPixel(img, i, j, SDL_MapRGB(image->format, 255, 255, 255));
+				setPixel(img, i, j, SDL_MapRGB(img->format, 255, 255, 255));
 		}
 }
 
@@ -337,7 +339,7 @@ bool CheckCompo(int l, int L)
 
 int getL(SDL_Surface* img, int x, int y)
 {
-	int width = image->w;
+	int width = img->w;
 	int i;
 	for (i = 0; i + x < width; i++)
 	{
@@ -349,7 +351,7 @@ int getL(SDL_Surface* img, int x, int y)
 
 int getl(SDL_Surface* img, int x, int y)
 {
-    int height = image->h;
+    int height = img->h;
 	int j;
 	for (j = 0; y + j < height; j++)
 	{
@@ -361,8 +363,8 @@ int getl(SDL_Surface* img, int x, int y)
 //Supposition qu'il n'y a qu'une composante affichée et qu'elle est liée(aucun blanc à l'intérieur passage préalable d'une ouverture très grande)
 void TraceRekt(SDL_Surface* img)//Peut etre prendre une seconde image étant celle de base sur laquelle tracer le rect
 {
-	int width = image->w;
-    int height = image->h;
+	int width = img->w;
+    int height = img->h;
 	for (int i = 0; i < width; i++)
 		for (int j = 0; j < height; j++)
 		{
