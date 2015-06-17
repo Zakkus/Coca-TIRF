@@ -56,7 +56,7 @@ void Red_to_Black(SDL_Surface* image)
         for (int j = 0; j < height; j++)
         {
             rgb = getRGB(tmp, i, j);
-            if (rgb[0] == 0)
+            if (rgb[0] == 0 || rgb[1] == 255 || rgb[2] == 255)
                 setPixel(image, i, j,SDL_MapRGB(image->format, 255, 255, 255));
             else
                 setPixel(image, i, j,SDL_MapRGB(image->format, 0, 0, 0));
