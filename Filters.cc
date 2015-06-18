@@ -274,7 +274,10 @@ void MaxCompo(SDL_Surface* image)
             if (getRGB(image, i, j)[0] == 0)
             {
                 number++;
-                Compo(image, i, j, number);
+				if (number / 255 == 0)
+					Compo(image, i, j, number);
+				else
+					break;
             }
         }
 }
