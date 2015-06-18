@@ -234,29 +234,30 @@ SDL_Surface* erode(SDL_Surface* image, int dimx, int dimy)
 	return tmp;
 }
 
-void dilate(SDL_Surface* image, SDL_Surface* tmp, int dimx, int dimy)
+SDL_Surface* dilate(SDL_Surface* image, int dimx, int dimy)
 {
     int width = image->w;
     int height = image->h;
-    //SDL_Surface* tmp = new SDL_Surface(*image);
+    SDL_Surface* tmp = SDL_CreateRGBSurface(0, width, height, 32, 0, 0, 0, 0);
 	std::vector<Uint8> rgb = std::vector<Uint8>();
     for (int j = dimy; j < height - dimy; j++)
     {
         for (int i = dimx; i < width - dimx; i++)
         {
-			rgb = getRGB(tmp, i, j);
+			rgb = getRGB(image, i, j);
             if (rgb[0] == rgb[1] && rgb[1] == rgb[2] && rgb[0] == 0)
 			{
 				for (int x = -dimx; x <= dimx; x++)
 				{
 					for (int y = -dimy; y <= dimy; y++)
 					{
-						setPixel(image, x + i, y + j, SDL_MapRGB(image->format, 0, 0, 0));
+						setPixel(tmp, x + i, y + j, SDL_MapRGB(image->format, 0, 0, 0));
 					}
 				}
 			}
         }
     }
+	return tmp;
 }
 
 //Image binarisée donne un numéro sur chaque composante
