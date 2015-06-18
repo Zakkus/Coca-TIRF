@@ -1,5 +1,25 @@
 #include"Filters.hh"
 
+void more_frontier(SDL_Surface *image)
+{
+    int width = image->w;
+    int height = image->h;
+    std::vector<Uint8> rgb1,rgb2,rgb3;
+    SDL_Surface* tmp = SDL_CreateRGBSurface(0,width,height,32,0,0,0,0);
+    SDL_BlitSurface(image, NULL, tmp, NULL);
+
+    for (int i = 1; i < width-1; i++)
+        for (int j = 1; j < height-1; j++)
+        {
+            rgb1 = getRGB(tmp, i, j);
+            rgb2 = getRGB(tmp, i - 1, j);
+            rgb3 = getRGB(tmp, i, j - 1);
+            if ((rgb1[0] != rgb2[0] || rgb1[0] != rgb2[0]))
+                setPixel(image, i, j, SDL_MapRGB(image->format, 0, 0, 0));
+        }
+
+}
+
 void redFilter(SDL_Surface* image)
 {
     int width = image->w;
@@ -10,7 +30,7 @@ void redFilter(SDL_Surface* image)
     for (int i = 0; i < width; i++)
         for (int j = 0; j < height; j++)
         {
-            rgb = getRGB(tmp, i, j);
+            rgb = getRGB(image, i, j);
             //if (rgb[1] <= 100 && rgb[2] <= 100 && rgb[0] > 100)
             //	setPixel(image, i, j, SDL_MapRGB(image->format, 255, 0, 0));
             if (!(rgb[1] <= 100 && rgb[2] <= 100 && rgb[0] > 100))
@@ -209,55 +229,56 @@ void findRectangle(SDL_Surface* image)
 
 //erode et dilate ont besoin d'une SDL_Surface binarisée
 
-SDL_Surface* erode(SDL_Surface* image, int dimx, int dimy)
+void erode(SDL_Surface* image, int dimx, int dimy)
 {
     int width = image->w;
     int height = image->h;
-    SDL_Surface* tmp = SDL_CreateRGBSurface(0, width, height, 32, 0, 0, 0, 0);
+    SDL_Surface* tmp = SDL_CreateRGBSurface(0,width,height,32,0,0,0,0);
+    SDL_BlitSurface(image, NULL, tmp, NULL);
 	std::vector<Uint8> rgb = std::vector<Uint8>();
     for (int j = dimy; j < height - dimy; j++)
     {
         for (int i = dimx; i < width - dimx; i++)
         {
-			rgb = getRGB(image, i, j);
+			rgb = getRGB(tmp, i, j);
 			if (rgb[0] == rgb[1] && rgb[1] == rgb[2] && rgb[0] == 255)
 			{
 				//std::cout << i << j << std::endl;
 				for (int x = -dimx; x <= dimx; x++)
 					for (int y = -dimy; y <= dimy; y++)
 					{
-						setPixel(tmp, x + i, y + j, SDL_MapRGB(image->format, 255, 255, 255));
+						setPixel(image, x + i, y + j, SDL_MapRGB(image->format, 255, 255, 255));
 					}
 			}
         }
     }
-	return tmp;
 }
 
-SDL_Surface* dilate(SDL_Surface* image, int dimx, int dimy)
+void dilate(SDL_Surface* image, int dimx, int dimy)
 {
     int width = image->w;
     int height = image->h;
-    SDL_Surface* tmp = SDL_CreateRGBSurface(0, width, height, 32, 0, 0, 0, 0);
+    SDL_Surface* tmp = SDL_CreateRGBSurface(0,width,height,32,0,0,0,0);
+    SDL_BlitSurface(image, NULL, tmp, NULL);
 	std::vector<Uint8> rgb = std::vector<Uint8>();
     for (int j = dimy; j < height - dimy; j++)
     {
         for (int i = dimx; i < width - dimx; i++)
         {
-			rgb = getRGB(image, i, j);
+			rgb = getRGB(tmp, i, j);
             if (rgb[0] == rgb[1] && rgb[1] == rgb[2] && rgb[0] == 0)
 			{
 				for (int x = -dimx; x <= dimx; x++)
 				{
 					for (int y = -dimy; y <= dimy; y++)
 					{
-						setPixel(tmp, x + i, y + j, SDL_MapRGB(image->format, 0, 0, 0));
+                        //std::cout << "in" <<std::endl;
+						setPixel(image, x + i, y + j, SDL_MapRGB(image->format, 0, 0, 0));
 					}
 				}
 			}
         }
     }
-	return tmp;
 }
 
 //Image binarisée donne un numéro sur chaque composante
@@ -411,6 +432,5 @@ void TraceRekt(SDL_Surface* img)//Peut etre prendre une seconde image étant cell
 				}
 				break;
 			}
-				
 		}
 }

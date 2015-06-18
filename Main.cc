@@ -8,7 +8,7 @@ int main(int argc, char* argv[])
     //SDL_Surface* image = loadImage("D:/Work/TIRF/Coca/Coca/simple/HPIM4430.JPG");
     //SDL_Surface* image = loadImage("D:/Work/TIRF/Coca/Coca/simple/HPIM4433.JPG");
     SDL_Surface* image = loadImage(argv[1]);
-	SDL_Surface* save = loadImage(argv[1]);
+//	SDL_Surface* save = loadImage(argv[1]);
     //SDL_Surface* image = loadImage("D:/Work/TIRF/Coca/Coca/moins_simple/HPIM4422.JPG");
     //grayScale(image);
     //sobelFilter(image);
@@ -18,12 +18,27 @@ int main(int argc, char* argv[])
 
     //SDL_Surface* image = loadImage("D:/Work/TIRF/can.jpg");
     redFilter(image);
+//    redFilter(save);
 
     Red_to_Black(image);
+//    Red_to_Black(save);
 
-    erode(image, save, 2);
-    dilate(image, save, 2);
+    erode(image, 0,4);
+    dilate(image, 0,4);
+    erode(image, 4,0);
+    dilate(image, 4,0);
+    erode(image, 3,3);
+    dilate(image, 3,3);
+    
+    dilate(image,5,0);
+    erode(image,5,0);
+//    more_frontier(image);
+//
+
+    MaxCompo(image);
+
     displayImage(createWindow(), image);
+
 
     return 0;
 }
