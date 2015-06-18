@@ -267,38 +267,54 @@ void MaxCompo(SDL_Surface* image)
     int width = image->w;
     int height = image->h;
     //SDL_Surface* tmp = new SDL_Surface(*image);
-    int number = 0;
+    int n1 = 0;
+	int n2 = 0;
+	int n3 = 0;
     for (int i = 0; i < width; i++)
         for (int j = 0; j < height; j++)
         {
             if (getRGB(image, i, j)[0] == 0)
             {
-                number++;
-				if (number / 255 == 0)
-					Compo(image, i, j, number);
+                n1++;
+				if (n1 / 254 == 0)
+					Compo(image, i, j, n1, n2, n3);
 				else
-					break;
+				{
+					n2++;
+					n1 = n1 % 254;
+					if (n2 / 254 == 0)
+						Compo(image, i, j, n1, n2, n3);
+					else
+					{
+						n3++;
+						n2 = n2 % 254;
+						if (n3 / 254 == 0)
+							Compo(image, i, j, n1, n2, n3);
+					}
+				}
             }
         }
 }
 
 //num ne peut pas passer le 253
 
-void Compo(SDL_Surface* image, int i, int j, int num)
+void Compo(SDL_Surface* image, int i, int j, int n1, int n2, int n3)
 {
     int width = image->w;
     int height = image->h;
-    if (getRGB(image,i,j)[0] == 0)
+	std::vector<Uint8> rgb = std::vector<Uint8>();
+	rgb = getRGB(image,i,j);
+    if (rgb[0] == 0 && rgb[1] == 0 && rgb[2] == 0)
     {
-        setPixel(image, i, j, SDL_MapRGB(image->format, num, 0, 0));
+        setPixel(image, i, j, SDL_MapRGB(image->format, n1, n2, n3));
         if (i - 1 > 0)
-            Compo(image, i -1, j, num);
+            Compo(image, i -1, j, n1, n2, n3);
         if (i + 1 < width)
-            Compo(image, i + 1, j, num);
+            Compo(image, i + 1, j, n1, n2, n3);
         if (j - 1 > 0)
-            Compo(image, i, j - 1, num);
+            Compo(image, i, j - 1, n1, n2, n3);
         if (j + 1 < height)
-            Compo(image, i, j + 1, num);
+            Compo(image, i, j + 1, n1, n2, n3);
     }
 }
 
