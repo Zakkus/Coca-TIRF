@@ -209,28 +209,31 @@ void findRectangle(SDL_Surface* image)
 
 //erode et dilate ont besoin d'une SDL_Surface binarisée
 
-void erode(SDL_Surface* image, SDL_Surface* tmp, int dimx, int dimy)
+SDL_Surface* erode(SDL_Surface* image, int dimx, int dimy)
 {
     int width = image->w;
     int height = image->h;
-    //SDL_Surface* tmp = new SDL_Surface(*image);
+    SDL_Surface* tmp = new SDL_Surface();
+	tmp->clip_rect.w = width;
+	tmp->clip_rect.h = height;
 	std::vector<Uint8> rgb = std::vector<Uint8>();
     for (int j = dimy; j < height - dimy; j++)
     {
         for (int i = dimx; i < width - dimx; i++)
         {
-			rgb = getRGB(tmp, i, j);
+			rgb = getRGB(image, i, j);
 			if (rgb[0] == rgb[1] && rgb[1] == rgb[2] && rgb[0] == 255)
 			{
 				//std::cout << i << j << std::endl;
 				for (int x = -dimx; x <= dimx; x++)
 					for (int y = -dimy; y <= dimy; y++)
 					{
-						setPixel(image, x + i, y + j, SDL_MapRGB(image->format, 255, 255, 255));
+						setPixel(tmp, x + i, y + j, SDL_MapRGB(image->format, 255, 255, 255));
 					}
 			}
         }
     }
+	return tmp;
 }
 
 void dilate(SDL_Surface* image, SDL_Surface* tmp, int dimx, int dimy)
