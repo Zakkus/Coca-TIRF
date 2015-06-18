@@ -213,9 +213,7 @@ SDL_Surface* erode(SDL_Surface* image, int dimx, int dimy)
 {
     int width = image->w;
     int height = image->h;
-    SDL_Surface* tmp = new SDL_Surface();
-	tmp->clip_rect.w = width;
-	tmp->clip_rect.h = height;
+    SDL_Surface* tmp = SDL_CreateRGBSurface(0, width, height, 32, 0, 0, 0, 0);
 	std::vector<Uint8> rgb = std::vector<Uint8>();
     for (int j = dimy; j < height - dimy; j++)
     {
