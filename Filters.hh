@@ -23,6 +23,7 @@ std::vector<int>* ChooseCompo(SDL_Surface* image);
 void ColorCompo(SDL_Surface* image, std::vector<int> compo);
 int getL(SDL_Surface* img);
 int getl(SDL_Surface* img);
+bool CheckCompo(int l, int L);
 void Compo_lr(SDL_Surface* image, int i, int j, int n1, int n2, int n3);
 void Compo_tb(SDL_Surface* image, int i, int j, int n1, int n2, int n3);
 void Compo_tr(SDL_Surface* image, int i, int j, int n1, int n2, int n3);
