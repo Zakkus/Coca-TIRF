@@ -564,7 +564,7 @@ int getL(SDL_Surface* img)
 	return Lmax;
 }
 
-int getl(SDL_Surface* img, int x, int y)
+int getl(SDL_Surface* img)
 {
     int width = img->w;
 	int height = img->h;
