@@ -325,9 +325,12 @@ void Compo(SDL_Surface* image, int i, int j, int n1, int n2, int n3)
     int height = image->h;
 	std::vector<Uint8> rgb = std::vector<Uint8>();
 	rgb = getRGB(image,i,j);
-    if (rgb[0] == 0 && rgb[1] == 0 && rgb[2] == 0)
+	int c1 = rgb[0];
+	int c2 = rgb[1];
+	int c3 = rgb[2];
+	rgb.clear();
+    if (c1 == 0 && c2 == 0 && c3 == 0)
     {
-		rgb.clear();
         setPixel(image, i, j, SDL_MapRGB(image->format, n1, n2, n3));
         if (i - 1 > 0)
             Compo(image, i -1, j, n1, n2, n3);
@@ -440,13 +443,32 @@ int getL(SDL_Surface* img)
 
 int getl(SDL_Surface* img, int x, int y)
 {
-    int height = img->h;
-	int j;
-	for (j = 0; y + j < height; j++)
+    int width = img->w;
+	int height = img->h;
+	int i = 0;
+	int lmax = 0;
+	for (int k = 0; k < width; k++)
 	{
-		if (getRGB(img, x, y + j)[0] != 0)
-			break;
+		int l = 0;
+		for (int j = 0; j < height; j++)
+		{
+			if (l != 0 && getRGB(img, k, j)[0] == 0)
+			{
+				l++;
+				i = j;
+			}
+			else
+			{
+				if (getRGB(img,k,j)[0] == 0)
+				{
+					l += k - j;
+					i = j;
+				}
+			}
+		}
+		lmax = std::max(lmax, l);
 	}
+	return lmax;
 }
 
 //Supposition qu'il n'y a qu'une composante affichée et qu'elle est liée(aucun blanc à l'intérieur passage préalable d'une ouverture très grande)
