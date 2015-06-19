@@ -568,14 +568,14 @@ int getl(SDL_Surface* img, int x, int y)
 {
     int width = img->w;
 	int height = img->h;
-	int i = 0;
 	int lmax = 0;
 	for (int k = 0; k < width; k++)
 	{
 		int l = 0;
+		int i = 0;
 		for (int j = 0; j < height; j++)
 		{
-			if (l != 0 && getRGB(img, k, j)[0] == 0)
+			if (l == 0 && getRGB(img, k, j)[0] == 0)
 			{
 				l++;
 				i = j;

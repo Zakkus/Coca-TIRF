@@ -46,6 +46,8 @@ int main(int argc, char* argv[])
 	
 	int L = getL(image);
 	std::cout << L << std::endl;
+	int l = getl(image);
+	std::cout << l <<std::endl;
 	
 	SDL_Window* window = createWindow();
 	if (window == NULL)
