@@ -417,7 +417,7 @@ int getL(SDL_Surface* img)
 	for (int j = 0; j < height; j++)
 	{
 		int L = 0;
-		for (int k = 0; k < width; i++)
+		for (int k = 0; k < width; k++)
 		{
 			if (L != 0 && getRGB(img, k,j)[0] == 0)
 			{
