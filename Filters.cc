@@ -536,25 +536,25 @@ int getL(SDL_Surface* img)
 {
 	int width = img->w;
 	int height = img->h;
-	int i = 0;
 	int Lmax = 0;
 	for (int j = 0; j < height; j++)
 	{
 		int L = 0;
+		int i = 0;
 		for (int k = 0; k < width; k++)
 		{
-			if (L != 0 && getRGB(img, k,j)[0] == 0)
+			if (L == 0 && getRGB(img, k,j)[0] == 0)
 			{
 				L++;
 				i = k;
-				std::cout << i << std::endl;
+				//std::cout << i << std::endl;
 			}
 			else
 			{
 				if (getRGB(img,k,j)[0] == 0)
 				{
 					L += k - i;
-					std::cout << k -i << std::endl;
+					//std::cout << k -i << std::endl;
 					i = k;
 				}
 			}
