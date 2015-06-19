@@ -49,7 +49,7 @@ int main(int argc, char* argv[])
 	int l = getl(image);
 	std::cout << l <<std::endl;
 	
-	std::cout << CheckCompo(l, L) << std::endl;
+	std::cout << CheckCompo(L, l) << std::endl;
 	
 	SDL_Window* window = createWindow();
 	if (window == NULL)
