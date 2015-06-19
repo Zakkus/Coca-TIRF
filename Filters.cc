@@ -634,3 +634,43 @@ std::vector<std::pair<int, int> > Findall(SDL_Surface* img, int n1, int n2, int 
 		}
 	return all;
 }
+
+void Compo(SDL_Surface* image)
+{
+	int width = img->w;
+    int height = img->h;
+	std::vector<Uint8> rgbg;
+	std::vector<Uint8> rgbh;
+	SDL_Surface* tmp = SDL_CreateRGBSurface(0,width,height,32,0,0,0,0);
+    SDL_BlitSurface(img, NULL, tmp, NULL);
+	int n1 = 0;
+	int n2 = 0;
+	int n3 = 0;
+	for (int j = 1; j < height; j++)
+		for (int i = 1; i < width; i++)
+		{
+			rgbh = getRGB(tmp, i, j -1);
+			rgbg = getRGB(tmp, i - 1, j);
+			if (rgbg[0] == 255 && rgbh[0] == 255)
+			{
+				n1++;
+				n2 += n1 / 254;
+				n3 += n2 / 254;
+				n1 = n1 % 254;
+				setPixel(image, i, j, SDL_MapRGB(image->format, n1, n2, n3));
+			}
+			else
+			{
+				if (rgbg[0] == 0)
+				{
+					std::vector<Uint8> rgb = getRGB(image, i - 1, j);
+					setPixel(image, i, j, SDL_MapRGB(image->format, rgb[0], rgb[1], rgb[2]));
+				}
+				else
+				{
+					std::vector<Uint8> rgb = getRGB(image, i, j - 1);
+					setPixel(image, i, j, SDL_MapRGB(image->format, rgb[0], rgb[1], rgb[2]));
+				}
+			}
+		}
+}
