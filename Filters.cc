@@ -531,7 +531,7 @@ void ColorCompo(SDL_Surface* img, std::vector<int> compo)
 //Dis si la composante à des dimensions qui correspondent à celle d'une canette
 bool CheckCompo(int l, int L)
 {
-	return l * 2 <= L && l * 1.5 >= L;
+	return (l * 2 >= L && l * 1.5 <= L) || (L * 2 >= l && L * 1.5 <= l);
 }
 
 int getL(SDL_Surface* img)
@@ -566,18 +566,18 @@ int getL(SDL_Surface* img)
 	return Lmax;
 }
 
-int getl(SDL_Surface* img, int x, int y)
+int getl(SDL_Surface* img)
 {
     int width = img->w;
 	int height = img->h;
-	int i = 0;
 	int lmax = 0;
 	for (int k = 0; k < width; k++)
 	{
 		int l = 0;
+		int i = 0;
 		for (int j = 0; j < height; j++)
 		{
-			if (l != 0 && getRGB(img, k, j)[0] == 0)
+			if (l == 0 && getRGB(img, k, j)[0] == 0)
 			{
 				l++;
 				i = j;
@@ -586,7 +586,7 @@ int getl(SDL_Surface* img, int x, int y)
 			{
 				if (getRGB(img,k,j)[0] == 0)
 				{
-					l += k - j;
+					l += j - i;
 					i = j;
 				}
 			}
