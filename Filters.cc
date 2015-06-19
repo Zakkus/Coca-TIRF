@@ -298,19 +298,28 @@ void MaxCompo(SDL_Surface* image)
             {
                 n1++;
 				if (n1 / 254 == 0)
+				{
 					Compo_lr(image, i, j, n1, n2, n3);
+					Compo_tb(image, i, j, n1, n2, n3);
+				}
 				else
 				{
 					n2++;
 					n1 = n1 % 254;
 					if (n2 / 254 == 0)
+					{
 						Compo_lr(image, i, j, n1, n2, n3);
+						Compo_tb(image, i, j, n1, n2, n3);
+					}
 					else
 					{
 						n3++;
 						n2 = n2 % 254;
 						if (n3 / 254 == 0)
+						{
 							Compo_lr(image, i, j, n1, n2, n3);
+							Compo_tb(image, i, j, n1, n2, n3);
+						}
 					}
 				}
             }
