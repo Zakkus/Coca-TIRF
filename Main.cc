@@ -42,11 +42,11 @@ int main(int argc, char* argv[])
 	std::cout << compo->at(0) << std::endl;
 	std::cout << compo->at(1) << std::endl;
 	
-	//ColorCompo(image, *compo);
+	ColorCompo(image, *compo);
 	
-	/*int L = getL(image);
+	int L = getL(image);
 	std::cout << L << std::endl;
-	*/
+	
 	SDL_Window* window = createWindow();
 	if (window == NULL)
 		return 1;

@@ -115,7 +115,7 @@ void sobelFilter(SDL_Surface* image)
     for (int i = 1; i < width - 1; i++)
         for (int j = 1; j < height - 1; j++)
         {
-            //on considère que l'image est en niveaux de gris
+            //on considÃ¨re que l'image est en niveaux de gris
 
             const int x_op[3][3] = { { -1, 0, 1 },
                 { -2, 0, 2 },
@@ -158,7 +158,7 @@ void laplaceFilter(SDL_Surface* image)
     for (int i = 1; i < width - 1; i++)
         for (int j = 1; j < height - 1; j++)
         {
-            //on considère que l'image est en niveaux de gris
+            //on considÃ¨re que l'image est en niveaux de gris
 
             const char x_op[3][3] = { {  0, -1,  0 },
                 { -1,  5, -1 },
@@ -178,7 +178,7 @@ void laplaceFilter(SDL_Surface* image)
 
 void findRectangle(SDL_Surface* image)
 {
-    //on considère une image couleur passée en rouge
+    //on considÃ¨re une image couleur passÃ©e en rouge
     int width = image->w;
     int height = image->h;
 
@@ -229,7 +229,7 @@ void findRectangle(SDL_Surface* image)
         }
 }
 
-//erode et dilate ont besoin d'une SDL_Surface binarisée
+//erode et dilate ont besoin d'une SDL_Surface binarisÃ©e
 
 void erode(SDL_Surface* image, int dimx, int dimy)
 {
@@ -283,7 +283,7 @@ void dilate(SDL_Surface* image, int dimx, int dimy)
     }
 }
 
-//Image binarisée donne un numéro sur chaque composante
+//Image binarisÃ©e donne un numÃ©ro sur chaque composante
 
 void MaxCompo(SDL_Surface* image)
 {
@@ -528,7 +528,7 @@ void ColorCompo(SDL_Surface* img, std::vector<int> compo)
 		}
 }
 
-//Dis si la composante à des dimensions qui correspondent à celle d'une canette
+//Dis si la composante Ã  des dimensions qui correspondent Ã  celle d'une canette
 bool CheckCompo(int l, int L)
 {
 	return l * 2 <= L && l * 1.5 >= L;
@@ -594,8 +594,8 @@ int getl(SDL_Surface* img, int x, int y)
 	return lmax;
 }
 
-//Supposition qu'il n'y a qu'une composante affichée et qu'elle est liée(aucun blanc à l'intérieur passage préalable d'une ouverture très grande)
-/*void TraceRekt(SDL_Surface* img)//Peut etre prendre une seconde image étant celle de base sur laquelle tracer le rect
+//Supposition qu'il n'y a qu'une composante affichÃ©e et qu'elle est liÃ©e(aucun blanc Ã  l'intÃ©rieur passage prÃ©alable d'une ouverture trÃ¨s grande)
+/*void TraceRekt(SDL_Surface* img)//Peut etre prendre une seconde image Ã©tant celle de base sur laquelle tracer le rect
 {
 	int width = img->w;
     int height = img->h;
@@ -645,6 +645,7 @@ void Compo(SDL_Surface* image)
 	std::vector<Uint8> rgbh;
 	SDL_Surface* tmp = SDL_CreateRGBSurface(0,width,height,32,0,0,0,0);
     SDL_BlitSurface(image, NULL, tmp, NULL);
+	int k = 0;
 	int n1 = 0;
 	int n2 = 0;
 	int n3 = 0;
@@ -667,15 +668,15 @@ void Compo(SDL_Surface* image)
 			{
 				if (rgbg[0] == 0 && rgbh[0] == 0)
 				{
-					std::vector<Uint8> rgb1 = getRGB(image, i -1, j);
+					std::vector<Uint8> rgb1 = getRGB(image, i - 1, j);
 					std::vector<Uint8> rgb2 = getRGB(image, i ,j - 1);
-					int m = std::max(rgb1[2], rgb2[2]);
+					int m = std::min(rgb1[2], rgb2[2]);
 					if (m == rgb1[2] && m == rgb2[2])
 					{
-						m = std::max(rgb1[1], rgb2[1]);
+						m = std::min(rgb1[1], rgb2[1]);
 						if (m == rgb1[1] && m == rgb2[1])
 						{
-							m = std::max(rgb1[0], rgb2[0]);
+							m = std::min(rgb1[0], rgb2[0]);
 							setPixel(image, i, j, SDL_MapRGB(image->format, m, rgb1[1], rgb1[2]));
 						}
 						else if (m == rgb1[1])
@@ -701,4 +702,69 @@ void Compo(SDL_Surface* image)
 			}
 			}
 		}
+	while (k < 5)
+	{
+	for (int j = height - 2; j >= 0; j--)
+		for (int i = width - 2; i >= 0; i--)
+		{
+			if (getRGB(tmp, i, j)[0] == 0)
+			{
+				std::vector<Uint8> rgb1 = getRGB(image, i + 1, j);
+				std::vector<Uint8> rgb2 = getRGB(image, i ,j + 1);
+				if (rgb1[0] != 255 && rgb2[0] != 255)
+				{
+				int m = std::min(rgb1[2], rgb2[2]);
+					if (m == rgb1[2] && m == rgb2[2])
+					{
+						m = std::min(rgb1[1], rgb2[1]);
+						if (m == rgb1[1] && m == rgb2[1])
+						{
+							m = std::min(rgb1[0], rgb2[0]);
+							setPixel(image, i, j, SDL_MapRGB(image->format, m, rgb1[1], rgb1[2]));
+						}
+						else if (m == rgb1[1])
+							setPixel(image, i, j, SDL_MapRGB(image->format, rgb1[0], rgb1[1], rgb1[2]));
+						else
+							setPixel(image, i, j, SDL_MapRGB(image->format, rgb2[0], rgb2[1], rgb2[2]));
+					}
+					else if (m == rgb1[2])
+						setPixel(image, i, j, SDL_MapRGB(image->format, rgb1[0], rgb1[1], rgb1[2]));
+					else
+						setPixel(image, i, j, SDL_MapRGB(image->format, rgb2[0], rgb2[1], rgb2[2]));
+				}
+			}
+		}
+
+	for (int j = 1; j < height; j++)
+		for (int i = 1; i < width; i++)
+		{
+			if (getRGB(tmp, i, j)[0] == 0)
+			{
+				std::vector<Uint8> rgb1 = getRGB(image, i - 1, j);
+				std::vector<Uint8> rgb2 = getRGB(image, i ,j - 1);
+				if (rgb1[0] != 255 && rgb2[0] != 255)
+				{
+				int m = std::min(rgb1[2], rgb2[2]);
+					if (m == rgb1[2] && m == rgb2[2])
+					{
+						m = std::min(rgb1[1], rgb2[1]);
+						if (m == rgb1[1] && m == rgb2[1])
+						{
+							m = std::min(rgb1[0], rgb2[0]);
+							setPixel(image, i, j, SDL_MapRGB(image->format, m, rgb1[1], rgb1[2]));
+						}
+						else if (m == rgb1[1])
+							setPixel(image, i, j, SDL_MapRGB(image->format, rgb1[0], rgb1[1], rgb1[2]));
+						else
+							setPixel(image, i, j, SDL_MapRGB(image->format, rgb2[0], rgb2[1], rgb2[2]));
+					}
+					else if (m == rgb1[2])
+						setPixel(image, i, j, SDL_MapRGB(image->format, rgb1[0], rgb1[1], rgb1[2]));
+					else
+						setPixel(image, i, j, SDL_MapRGB(image->format, rgb2[0], rgb2[1], rgb2[2]));
+				}
+			}
+		}
+		k++;
+	}
 }
