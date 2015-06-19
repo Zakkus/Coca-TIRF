@@ -31,12 +31,14 @@ void redFilter(SDL_Surface* image)
         for (int j = 0; j < height; j++)
         {
             rgb = getRGB(image, i, j);
-            //if (rgb[1] <= 100 && rgb[2] <= 100 && rgb[0] > 100)
-            //	setPixel(image, i, j, SDL_MapRGB(image->format, 255, 0, 0));
+            setPixel(image, i, j, SDL_MapRGB(image->format, 255, 0, 0));
             if (!(rgb[1] <= 100 && rgb[2] <= 100 && rgb[0] > 100))
-                setPixel(image, i, j, SDL_MapRGB(image->format, 0, 0, 0));
+                setPixel(image, i, j, SDL_MapRGB(image->format, 255, 255, 255));
             if (rgb[1] >= 200 && rgb[2] >= 200 && rgb[0] >= 200)
                 setPixel(image, i, j, SDL_MapRGB(image->format, 255, 255, 255));
+            rgb = getRGB(image, i, j);
+            if (rgb[1] == 0)
+                setPixel(image, i, j, SDL_MapRGB(image->format, 0, 0, 0));
         }
 }
 
