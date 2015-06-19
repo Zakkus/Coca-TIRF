@@ -42,6 +42,9 @@ int main(int argc, char* argv[])
 	std::cout << compo[1] << std::endl;
 	*/
 	ColorCompo(image, compo);
+	
+	int L = getL(image);
+	
 	SDL_Window* window = createWindow();
 	if (window == NULL)
 		return 1;

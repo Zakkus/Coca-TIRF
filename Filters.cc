@@ -356,7 +356,7 @@ std::vector<int> ChooseCompo(SDL_Surface* img)
 			rgb = getRGB(img,i,j);
 			if (rgb[0] != 255)
 			{
-				std::cout << "in" << std::endl;
+				//std::cout << "in" << std::endl;
 			if (c1 != rgb[0] || c2 != rgb[1] || c3 != rgb[3] )
 			{
 				many = 1;
