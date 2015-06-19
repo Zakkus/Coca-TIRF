@@ -354,7 +354,9 @@ std::vector<int> ChooseCompo(SDL_Surface* img)
 		for (int j = 0; j < height; j++)
 		{
 			rgb = getRGB(img,i,j);
-			if (c1 != rgb[0] && c2 != rgb[1] && c3 != rgb[3] )
+			if (rgb[0] != 255)
+			{
+			if (c1 != rgb[0] || c2 != rgb[1] || c3 != rgb[3] )
 			{
 				many = 1;
 				c1 = rgb[0];
@@ -371,6 +373,7 @@ std::vector<int> ChooseCompo(SDL_Surface* img)
 					maxcompo[1] = c2;
 					maxcompo[2] = c3;
 				}
+			}
 			}
 		}
 	return maxcompo;
