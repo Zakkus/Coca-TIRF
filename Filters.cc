@@ -436,7 +436,8 @@ void Compo_bl(SDL_Surface* image)
 							std::vector<std::pair<int,int> > points = Findall(image, rgb2[0], rgb2[1], rgb2[2]);
 							while (points.size() > 0)
 							{
-								std::pair<int,int> p = points.pop_back();
+								std::pair<int,int> p = points.back();
+								points.pop_back();
 								setPixel(image, p.first, p.second);
 							}
 						}
@@ -452,7 +453,8 @@ void Compo_bl(SDL_Surface* image)
 							std::vector<std::pair<int,int> > points = Findall(image, rgb2[0], rgb2[1], rgb2[2]);
 							while (points.size() > 0)
 							{
-								std::pair<int,int> p = points.pop_back();
+								std::pair<int,int> p = points.back();
+								points.pop_back();
 								setPixel(image, p.first, p.second);
 							}
 						}
