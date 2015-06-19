@@ -667,13 +667,13 @@ void Compo(SDL_Surface* image)
 				{
 					std::vector<Uint8> rgb1 = getRGB(image, i -1, j);
 					std::vector<Uint8> rgb2 = getRGB(image, i ,j - 1);
-					int m = std::max(rgb1[2], rgb2[2]);
+					int m = std::min(rgb1[2], rgb2[2]);
 					if (m == rgb1[2] && m == rgb2[2])
 					{
-						m = std::max(rgb1[1], rgb2[1]);
+						m = std::min(rgb1[1], rgb2[1]);
 						if (m == rgb1[1] && m == rgb2[1])
 						{
-							m = std::max(rgb1[0], rgb2[0]);
+							m = std::min(rgb1[0], rgb2[0]);
 							setPixel(image, i, j, SDL_MapRGB(image->format, m, rgb1[1], rgb1[2]));
 						}
 						else if (m == rgb1[1])
