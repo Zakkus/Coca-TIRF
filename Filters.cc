@@ -407,16 +407,33 @@ bool CheckCompo(int l, int L)
 	return l * 2 <= L && l * 1.5 >= L;
 }
 
-int getL(SDL_Surface* img, int x, int y)
+int getL(SDL_Surface* img)
 {
 	int width = img->w;
-	int i;
-	for (i = 0; i + x < width; i++)
+	int i = 0;
+	int Lmax = 0;
+	for (int j = 0; j < height; j++)
 	{
-		if (getRGB(img, x+i, y)[0] != 0)
-			break;
+		int L = 0;
+		for (int k = 0; k < width; i++)
+		{
+			if (L != 0 && getRGB(img, k,j)[0] == 0)
+			{
+				L++;
+				i = k;
+			}
+			else
+			{
+				if (getRGB(img,k,j)[0] == 0)
+				{
+					L += k - i;
+					i = k;
+				}
+			}
+		}
+		Lmax = max(Lmax, L);
 	}
-	return i;
+	return Lmax;
 }
 
 int getl(SDL_Surface* img, int x, int y)
@@ -431,7 +448,7 @@ int getl(SDL_Surface* img, int x, int y)
 }
 
 //Supposition qu'il n'y a qu'une composante affichée et qu'elle est liée(aucun blanc à l'intérieur passage préalable d'une ouverture très grande)
-void TraceRekt(SDL_Surface* img)//Peut etre prendre une seconde image étant celle de base sur laquelle tracer le rect
+/*void TraceRekt(SDL_Surface* img)//Peut etre prendre une seconde image étant celle de base sur laquelle tracer le rect
 {
 	int width = img->w;
     int height = img->h;
@@ -453,3 +470,4 @@ void TraceRekt(SDL_Surface* img)//Peut etre prendre une seconde image étant cell
 			}
 		}
 }
+*/
