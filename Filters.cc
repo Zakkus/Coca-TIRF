@@ -438,7 +438,7 @@ void Compo_bl(SDL_Surface* image)
 							{
 								std::pair<int,int> p = points.back();
 								points.pop_back();
-								setPixel(image, p.first, p.second, rgb1[0], rgb1[1], rgb1[2]);
+								setPixel(image, p.first, p.second, SDL_MapRGB(image->format, rgb1[0], rgb1[1], rgb1[2]));
 							}
 						}
 					}
@@ -455,7 +455,7 @@ void Compo_bl(SDL_Surface* image)
 							{
 								std::pair<int,int> p = points.back();
 								points.pop_back();
-								setPixel(image, p.first, p.second, rgb1[0], rgb1[1], rgb1[2]);
+								setPixel(image, p.first, p.second, SDL_MapRGB(image->format, rgb1[0], rgb1[1], rgb1[2]));
 							}
 						}
 					}
