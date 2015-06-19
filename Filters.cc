@@ -643,6 +643,9 @@ void Compo(SDL_Surface* image)
 	std::vector<Uint8> rgbh;
 	SDL_Surface* tmp = SDL_CreateRGBSurface(0,width,height,32,0,0,0,0);
     SDL_BlitSurface(image, NULL, tmp, NULL);
+	int k = 0;
+	while (k < 5)
+	{
 	int n1 = 0;
 	int n2 = 0;
 	int n3 = 0;
@@ -699,4 +702,59 @@ void Compo(SDL_Surface* image)
 			}
 			}
 		}
+		for (int j = height - 2; j >= 0; j--)
+		for (int i = width - 2; i >= 0; i--)
+		{
+			if (getRGB(tmp, i, j)[0] == 0)
+			{
+			rgbh = getRGB(tmp, i, j  + 1);
+			rgbg = getRGB(tmp, i + 1, j);
+			if (rgbg[0] == 255 && rgbh[0] == 255)
+			{
+				n1++;
+				n2 += n1 / 254;
+				n3 += n2 / 254;
+				n1 = n1 % 254;
+				setPixel(image, i, j, SDL_MapRGB(image->format, n1, n2, n3));
+			}
+			else
+			{
+				if (rgbg[0] == 0 && rgbh[0] == 0)
+				{
+					std::vector<Uint8> rgb1 = getRGB(image, i + 1, j);
+					std::vector<Uint8> rgb2 = getRGB(image, i ,j + 1);
+					int m = std::min(rgb1[2], rgb2[2]);
+					if (m == rgb1[2] && m == rgb2[2])
+					{
+						m = std::min(rgb1[1], rgb2[1]);
+						if (m == rgb1[1] && m == rgb2[1])
+						{
+							m = std::min(rgb1[0], rgb2[0]);
+							setPixel(image, i, j, SDL_MapRGB(image->format, m, rgb1[1], rgb1[2]));
+						}
+						else if (m == rgb1[1])
+							setPixel(image, i, j, SDL_MapRGB(image->format, rgb1[0], rgb1[1], rgb1[2]));
+						else
+							setPixel(image, i, j, SDL_MapRGB(image->format, rgb2[0], rgb2[1], rgb2[2]));
+					}
+					else if (m == rgb1[2])
+						setPixel(image, i, j, SDL_MapRGB(image->format, rgb1[0], rgb1[1], rgb1[2]));
+					else
+						setPixel(image, i, j, SDL_MapRGB(image->format, rgb2[0], rgb2[1], rgb2[2]));
+				}
+				else if (rgbg[0] == 0)
+				{
+					std::vector<Uint8> rgb = getRGB(image, i + 1, j);
+					setPixel(image, i, j, SDL_MapRGB(image->format, rgb[0], rgb[1], rgb[2]));
+				}
+				else
+				{
+					std::vector<Uint8> rgb = getRGB(image, i, j + 1);
+					setPixel(image, i, j, SDL_MapRGB(image->format, rgb[0], rgb[1], rgb[2]));
+				}
+			}
+			}
+		}
+		k++;
+	}
 }
