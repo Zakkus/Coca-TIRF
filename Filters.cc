@@ -642,7 +642,7 @@ void Compo(SDL_Surface* image)
 	std::vector<Uint8> rgbg;
 	std::vector<Uint8> rgbh;
 	SDL_Surface* tmp = SDL_CreateRGBSurface(0,width,height,32,0,0,0,0);
-    SDL_BlitSurface(img, NULL, tmp, NULL);
+    SDL_BlitSurface(image, NULL, tmp, NULL);
 	int n1 = 0;
 	int n2 = 0;
 	int n3 = 0;
