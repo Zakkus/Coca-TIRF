@@ -549,12 +549,14 @@ int getL(SDL_Surface* img)
 			{
 				L++;
 				i = k;
+				std::cout << i << std::endl;
 			}
 			else
 			{
 				if (getRGB(img,k,j)[0] == 0)
 				{
 					L += k - i;
+					std::cout << k -i << std::endl;
 					i = k;
 				}
 			}
