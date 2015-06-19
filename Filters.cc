@@ -434,9 +434,10 @@ void Compo_bl(SDL_Surface* image)
 						if (rgb1[0] != rgb2[0] || rgb1[1] != rgb2[1] || rgb1[2] != rgb2[2])
 						{
 							std::vector<std::pair<int,int> > points = Findall(image, rgb2[0], rgb2[1], rgb2[2]);
-							for (std::vector<std::pair<int,int> >::iterator it = points.begin(); it != points.end(); it++)
+							while (points.size() > 0)
 							{
-								setPixel(image, *(it).first, *(it).second;
+								std::pair<int,int> p = points.pop_back();
+								setPixel(image, p.first, p.second);
 							}
 						}
 					}
@@ -449,9 +450,10 @@ void Compo_bl(SDL_Surface* image)
 						if (rgb1[0] != rgb2[0] || rgb1[1] != rgb2[1] || rgb1[2] != rgb2[2])
 						{
 							std::vector<std::pair<int,int> > points = Findall(image, rgb2[0], rgb2[1], rgb2[2]);
-							for (std::vector<std::pair<int,int> >::iterator it = points.begin(); it != points.end(); it++)
+							while (points.size() > 0)
 							{
-								setPixel(image, *(it).first, *(it).second;
+								std::pair<int,int> p = points.pop_back();
+								setPixel(image, p.first, p.second);
 							}
 						}
 					}
