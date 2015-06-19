@@ -637,8 +637,8 @@ std::vector<std::pair<int, int> > Findall(SDL_Surface* img, int n1, int n2, int 
 
 void Compo(SDL_Surface* image)
 {
-	int width = img->w;
-    int height = img->h;
+	int width = image->w;
+    int height = image->h;
 	std::vector<Uint8> rgbg;
 	std::vector<Uint8> rgbh;
 	SDL_Surface* tmp = SDL_CreateRGBSurface(0,width,height,32,0,0,0,0);
