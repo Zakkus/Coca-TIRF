@@ -584,7 +584,7 @@ int getl(SDL_Surface* img)
 			{
 				if (getRGB(img,k,j)[0] == 0)
 				{
-					l += k - j;
+					l += j - i;
 					i = j;
 				}
 			}
