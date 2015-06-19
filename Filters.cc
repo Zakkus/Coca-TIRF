@@ -617,12 +617,12 @@ int getl(SDL_Surface* img, int x, int y)
 }
 */
 
-std::vector<std::pair<int, int> > Findall(SDL_Surface* image, int n1, int n2, int n3)
+std::vector<std::pair<int, int> > Findall(SDL_Surface* img, int n1, int n2, int n3)
 {
 	int width = img->w;
     int height = img->h;
 	std::vector<Uint8> rgb;
-	std::vector<std::pair<int,int> > all = std::vector<std::pair<int,int>>();
+	std::vector<std::pair<int,int> > all = std::vector<std::pair<int,int> >();
 	for (int i = 0; i < width; i++)
 		for (int j = 0; j < height; j++)
 		{
