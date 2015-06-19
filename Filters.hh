@@ -23,6 +23,7 @@ void ColorCompo(SDL_Surface* image, std::vector<int> compo);
 int getL(SDL_Surface* img);
 void Compo_lr(SDL_Surface* image, int i, int j, int n1, int n2, int n3);
 void Compo_tb(SDL_Surface* image, int i, int j, int n1, int n2, int n3);
+void Compo_tr(SDL_Surface* image, int i, int j, int n1, int n2, int n3);
 //à suivre, détecter les blocs de texte
 
 #endif // !FILTERS_HH
