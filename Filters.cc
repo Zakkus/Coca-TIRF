@@ -649,6 +649,8 @@ void Compo(SDL_Surface* image)
 	for (int j = 1; j < height; j++)
 		for (int i = 1; i < width; i++)
 		{
+			if (getRGB(tmp, i, j)[0] == 0)
+			{
 			rgbh = getRGB(tmp, i, j -1);
 			rgbg = getRGB(tmp, i - 1, j);
 			if (rgbg[0] == 255 && rgbh[0] == 255)
@@ -671,6 +673,7 @@ void Compo(SDL_Surface* image)
 					std::vector<Uint8> rgb = getRGB(image, i, j - 1);
 					setPixel(image, i, j, SDL_MapRGB(image->format, rgb[0], rgb[1], rgb[2]));
 				}
+			}
 			}
 		}
 }
