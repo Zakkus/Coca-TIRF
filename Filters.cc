@@ -376,7 +376,7 @@ std::vector<int> ChooseCompo(SDL_Surface* img)
 	return maxcompo;
 }
 
-void ColorCompo(SDL_Surface* img, int compo)
+void ColorCompo(SDL_Surface* img, std::vector<int> compo)
 {
 	SDL_Surface* tmp = new SDL_Surface(*img);
 	int width = img->w;
