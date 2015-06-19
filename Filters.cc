@@ -339,7 +339,7 @@ void Compo(SDL_Surface* image, int i, int j, int n1, int n2, int n3)
 			if (j + 1 < height)
 				Compo(image, k, j + 1, n1, n2, n3);
 		}
-		for (int l = i + 1; l < width && getRGB(image, l, j)[0] == 0 && getRGB(image, l, j)[1] == 0 && getRGB(image, l, j)[2] == 0; l--)
+		for (int l = i + 1; l < width && getRGB(image, l, j)[0] == 0 && getRGB(image, l, j)[1] == 0 && getRGB(image, l, j)[2] == 0; l++)
 		{
 			setPixel(image, l, j, SDL_MapRGB(image->format, n1, n2, n3));
 			if (j - 1 >= 0)
