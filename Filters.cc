@@ -339,9 +339,9 @@ void Compo(SDL_Surface* image, int i, int j, int n1, int n2, int n3)
     }
 }
 
-int ChooseCompo(SDL_Surface* img)
+std::vector<int> ChooseCompo(SDL_Surface* img)
 {
-	int maxcompo = 0;
+	std::vector<int> maxcompo = std::vector<int>(3,0);
 	int n = 0;
 	int width = img->w;
     int height = img->h;
@@ -353,7 +353,7 @@ int ChooseCompo(SDL_Surface* img)
 	for (int i = 0; i < width; i++)
 		for (int j = 0; j < height; j++)
 		{
-			rgb = getRGB(image,i,j);
+			rgb = getRGB(img,i,j);
 			if (c1 != rgb[0] && c2 != rgb[1] && c3 != rgb[3] )
 			{
 				many = 1;
@@ -367,7 +367,9 @@ int ChooseCompo(SDL_Surface* img)
 				if (n < many)
 				{
 					n = many;
-					maxcompo = c3 * 254 * 254 + c2 * 254 + c1;
+					maxcompo[0] = c1;
+					maxcompo[1] = c2;
+					maxcompo[2] = c3;
 				}
 			}
 		}
@@ -379,14 +381,14 @@ void ColorCompo(SDL_Surface* img, int compo)
 	SDL_Surface* tmp = new SDL_Surface(*img);
 	int width = img->w;
     int height = img->h;
-	int c3 = compo / (254 * 254);
-	int c2 = compo / 254 - c3 * 254;
-	int c1 = compo % 254;
+	int c3 = compo[2];
+	int c2 = compo[1];
+	int c1 = compo[0];
 	std::vector<Uint8> rgb = std::vector<Uint8>();
 	for (int i = 0; i < width; i++)
 		for (int j = 0; j < height; j++)
 		{
-			rgb = getRGB(image,i,j);
+			rgb = getRGB(img,i,j);
 			if (rgb[0] == c1 && rgb[1] == c2 && rgb[2] == c3)
 				setPixel(img, i, j, SDL_MapRGB(img->format, 0,0,0));
 			else

@@ -16,8 +16,10 @@ void Red_to_Black(SDL_Surface* image);
 void dilate(SDL_Surface* image, int dimx, int dimy);
 void erode(SDL_Surface* image, int dimx, int dimy);
 void MaxCompo(SDL_Surface* image);
-void Compo(SDL_Surface* image, int i, int j, int num);
+void Compo(SDL_Surface* image, int i, int j, int n1, int n2, int n3);
 void TraceRekt(SDL_Surface* image);
+std::vector<int> ChooseCompo(SDL_Surface* image);
+void ColorCompo(SDL_Surface* image, std::vector<int> compo);
 //à suivre, détecter les blocs de texte
 
 #endif // !FILTERS_HH
