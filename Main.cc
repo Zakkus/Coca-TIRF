@@ -43,7 +43,7 @@ int main(int argc, char* argv[])
 	*/
 	ColorCompo(image, compo);
 	
-	int L = getL(image);
+	//int L = getL(image);
 	
 	SDL_Window* window = createWindow();
 	if (window == NULL)
