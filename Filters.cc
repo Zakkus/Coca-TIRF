@@ -327,6 +327,7 @@ void Compo(SDL_Surface* image, int i, int j, int n1, int n2, int n3)
 	rgb = getRGB(image,i,j);
     if (rgb[0] == 0 && rgb[1] == 0 && rgb[2] == 0)
     {
+		rgb.clear();
         setPixel(image, i, j, SDL_MapRGB(image->format, n1, n2, n3));
         if (i - 1 > 0)
             Compo(image, i -1, j, n1, n2, n3);
