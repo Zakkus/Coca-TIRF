@@ -381,7 +381,8 @@ std::vector<int> ChooseCompo(SDL_Surface* img)
 
 void ColorCompo(SDL_Surface* img, std::vector<int> compo)
 {
-	SDL_Surface* tmp = new SDL_Surface(*img);
+	SDL_Surface* tmp = SDL_CreateRGBSurface(0,width,height,32,0,0,0,0);
+    SDL_BlitSurface(image, NULL, tmp, NULL);
 	int width = img->w;
     int height = img->h;
 	int c3 = compo[2];
