@@ -301,7 +301,7 @@ void MaxCompo(SDL_Surface* image)
 				{
 					///Compo_lr(image, i, j, n1, n2, n3);
 					Compo_tr(image, i, j, n1, n2, n3);
-					Compo_bl(image,i,j,n1,n2,n3);
+					//Compo_bl(image,i,j,n1,n2,n3);
 				}
 				else
 				{
@@ -311,7 +311,7 @@ void MaxCompo(SDL_Surface* image)
 					{
 						//Compo_lr(image, i, j, n1, n2, n3);
 						Compo_tr(image, i, j, n1, n2, n3);
-						Compo_bl(image,i,j,n1,n2,n3);
+						//Compo_bl(image,i,j,n1,n2,n3);
 					}
 					else
 					{
@@ -321,7 +321,7 @@ void MaxCompo(SDL_Surface* image)
 						{
 							//Compo_lr(image, i, j, n1, n2, n3);
 							Compo_tr(image, i, j, n1, n2, n3);
-							Compo_bl(image,i,j,n1,n2,n3);
+							//Compo_bl(image,i,j,n1,n2,n3);
 						}
 					}
 				}
