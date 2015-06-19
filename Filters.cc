@@ -410,6 +410,7 @@ bool CheckCompo(int l, int L)
 int getL(SDL_Surface* img)
 {
 	int width = img->w;
+	int height = img->h;
 	int i = 0;
 	int Lmax = 0;
 	for (int j = 0; j < height; j++)
@@ -431,7 +432,7 @@ int getL(SDL_Surface* img)
 				}
 			}
 		}
-		Lmax = max(Lmax, L);
+		Lmax = std::max(Lmax, L);
 	}
 	return Lmax;
 }
