@@ -38,9 +38,9 @@ int main(int argc, char* argv[])
     MaxCompo(image);
 	std::vector<int>* compo = ChooseCompo(image);
 	
-/*	std::cout << compo[0] << std::endl;
-	std::cout << compo[1] << std::endl;
-	*/
+	std::cout << compo->at(0) << std::endl;
+	std::cout << compo->at(1) << std::endl;
+	
 	ColorCompo(image, *compo);
 	
 	//int L = getL(image);
