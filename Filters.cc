@@ -414,25 +414,50 @@ void Compo_tr(SDL_Surface* image, int i, int j, int n1, int n2, int n3)
 	}
 }
 
-void Compo_bl(SDL_Surface* image, int i, int j, int n1, int n2, int n3)
+void Compo_bl(SDL_Surface* image)
 {
 	int width = image->w;
     int height = image->h;
-	int nextx = i + 1;
-	int nexty = j + 1;
-	/*if (nextx < width && getRGB(image, nextx, j)[0] != 255 && getRGB(image, nextx, j)[1] != 255 && getRGB(image, nextx, j)[2] != 255)
-		if(getRGB(image, nextx, j)[0] != n1 && getRGB(image, nextx, j)[1] != n2 && getRGB(image, nextx, j)[2] != n3)
-			Compo_tr(image, nextx, j, n1, n2, n3);
-	if (nexty < height && getRGB(image, i, nexty)[0] != 255 && getRGB(image, i, nexty)[1] != 255 && getRGB(image, i, nexty)[2] != 255)
-		if (getRGB(image, i, nexty)[0] != n1 && getRGB(image, i, nexty)[1] != n2 && getRGB(image, i, nexty)[2] != n3)
-			Compo_tr(image, i, nexty, n1, n2, n3);*/
-	for (int k = i; k >= 0 && getRGB(image, k, j)[0] != 255 && getRGB(image, k, j)[1] != 255 && getRGB(image, k, j)[2] != 255 && getRGB(image, k, j)[0] != n1 && getRGB(image, k, j)[1] != n2 && getRGB(image, k, j)[2] != n3; k--)
-	{
-		setPixel(image, k, j, SDL_MapRGB(image->format, n1, n2, n3));
-		int l = j - 1;
-		if (l >= 0 && getRGB(image, k, l)[0] != 255 && getRGB(image, k, l)[1] != 255 && getRGB(image, k, l)[2] != 255 && getRGB(image, k, l)[0] != n1 && getRGB(image, k, l)[1] != n2 && getRGB(image, k, l)[2] != n3)
-			Compo_bl(image, k, l, n1, n2, n3);
-	}
+	std::vector<Uint8> rgb1;
+	std::vector<Uint8> rgb2;
+	for (int i = 0; i < width; i++)
+		for (int j = 0; j < height; j++)
+		{
+			rgb1 = getRGB(image, i, j);
+			if (rgb1[0] != 255 && rgb1[1] != 255 && rgb1[2 != 255])
+			{
+				if (i - 1 >= 0)
+				{
+					rgb2 = getRGB(image, i - 1, j);
+					if (rgb2[0] != 255 && rgb2[1] != 255 && rgb2[2] != 255)
+					{
+						if (rgb1[0] != rgb2[0] || rgb1[1] != rgb2[1] || rgb1[2] != rgb2[2])
+						{
+							std::vector<std::pair<int,int> points = Findall(image, rgb2[0], rgb2[1], rgb2[2]);
+							for (std::vector<std::pair<int,int>>::iterator it = points.begin(); it != points.end(); it++)
+							{
+								setPixel(image, *it.first, *it.second);
+							}
+						}
+					}
+				}
+				if (j - 1 >= 0)
+				{
+					rgb2 = getRGB(image, i, j - 1);
+					if (rgb2[0] != 255 && rgb2[1] != 255 && rgb2[2] != 255)
+					{
+						if (rgb1[0] != rgb2[0] || rgb1[1] != rgb2[1] || rgb1[2] != rgb2[2])
+						{
+							std::vector<std::pair<int,int> points = Findall(image, rgb2[0], rgb2[1], rgb2[2]);
+							for (std::vector<std::pair<int,int>>::iterator it = points.begin(); it != points.end(); it++)
+							{
+								setPixel(image, *it.first, *it.second);
+							}
+						}
+					}
+				}
+			}
+		}
 }
 
 std::vector<int>* ChooseCompo(SDL_Surface* img)
@@ -587,3 +612,21 @@ int getl(SDL_Surface* img, int x, int y)
 		}
 }
 */
+
+std::vector<std::pair<int, int>> Findall(SDL_Surface* image, int n1, int n2, int n3)
+{
+	int width = img->w;
+    int height = img->h;
+	std::vector<Uint8> rgb;
+	std::vector<std::pair<int,int>> all = std::vector<std::pair<int,int>>();
+	for (int i = 0; i < width; i++)
+		for (int j = 0; j < height; j++)
+		{
+			rgb = getRGB(image, i, j);
+			if (rgb[0] == n1 && rgb[1] == n2 && rgb[2] == n3)
+			{
+				all.push_back(std::make_pair(i,j));
+			}
+		}
+	return all;
+}

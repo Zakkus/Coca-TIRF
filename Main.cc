@@ -36,6 +36,7 @@ int main(int argc, char* argv[])
 //
 
     MaxCompo(image);
+	Compo_bl(image);
 	std::vector<int>* compo = ChooseCompo(image);
 	
 	std::cout << compo->at(0) << std::endl;
