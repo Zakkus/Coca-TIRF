@@ -36,9 +36,16 @@ int main(int argc, char* argv[])
 //
 
     MaxCompo(image);
-
-    displayImage(createWindow(), image);
-
+	std::vector<int> compo = ChooseCompo(image);
+	
+	std::cout << compo[0] << std::endl;
+	std::cout << compo[1] << std::endl;
+	
+	SDL_Window* window = createWindow();
+	if (window == NULL)
+		return 1;
+    displayImage(window, image);
+	SDL_Delay(3000);
 
     return 0;
 }
