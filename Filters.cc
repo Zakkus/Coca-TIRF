@@ -339,9 +339,9 @@ void Compo(SDL_Surface* image, int i, int j, int n1, int n2, int n3)
     }
 }
 
-std::vector<int> ChooseCompo(SDL_Surface* img)
+std::vector<int>* ChooseCompo(SDL_Surface* img)
 {
-	std::vector<int> maxcompo = std::vector<int>(3,0);
+	std::vector<int>* maxcompo = new std::vector<int>(3,0);
 	int n = 0;
 	int width = img->w;
     int height = img->h;
@@ -356,7 +356,7 @@ std::vector<int> ChooseCompo(SDL_Surface* img)
 			rgb = getRGB(img,i,j);
 			if (rgb[0] != 255)
 			{
-				std::cout << "in" << std::endl;
+				//std::cout << "in" << std::endl;
 			if (c1 != rgb[0] || c2 != rgb[1] || c3 != rgb[3] )
 			{
 				many = 1;
@@ -370,9 +370,9 @@ std::vector<int> ChooseCompo(SDL_Surface* img)
 				if (n < many)
 				{
 					n = many;
-					maxcompo[0] = c1;
-					maxcompo[1] = c2;
-					maxcompo[2] = c3;
+					*(maxcompo)[0] = c1;
+					*(maxcompo)[1] = c2;
+					*(maxcompo)[2] = c3;
 				}
 			}
 			}
