@@ -370,9 +370,9 @@ std::vector<int>* ChooseCompo(SDL_Surface* img)
 				if (n < many)
 				{
 					n = many;
-					*(maxcompo)[0] = c1;
-					*(maxcompo)[1] = c2;
-					*(maxcompo)[2] = c3;
+					maxcompo->at(0) = c1;
+					maxcompo->at(1) = c2;
+					maxcompo->at(2) = c3;
 				}
 			}
 			}
