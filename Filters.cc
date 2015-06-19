@@ -400,9 +400,9 @@ void Compo_tr(SDL_Surface* image, int i, int j, int n1, int n2, int n3)
 	int lasty = j - 1;
 	if (lastx >= 0 && getRGB(image, lastx, j)[0] != 255 && getRGB(image, lastx, j)[1] != 255 && getRGB(image, lastx, j)[2] != 255 && getRGB(image, lastx, j)[0] != n1 && getRGB(image, lastx, j)[1] != n2 && getRGB(image, lastx, j)[2] != n3)
 		Compo_bl(image, lastx, j, n1, n2, n3);
-	if (lasty >=0 && getRGB(image, i, lasty)[0] != 255 && getRGB(image, i, lasty)[1] != 255 && getRGB(image, i, lasty)[2] != 255 && getRGB(image, i, lasty)[0] != n1 && getRGB(image, i, lasty)[1] != n2 && getRGB(image, i, lasty)[2] != n3)
+	if (lasty >= 0 && getRGB(image, i, lasty)[0] != 255 && getRGB(image, i, lasty)[1] != 255 && getRGB(image, i, lasty)[2] != 255 && getRGB(image, i, lasty)[0] != n1 && getRGB(image, i, lasty)[1] != n2 && getRGB(image, i, lasty)[2] != n3)
 		Compo_bl(image, i, lasty, n1, n2, n3);
-	for (int k = i; k < width && && getRGB(image, k, j)[0] != 255 && getRGB(image, k, j)[1] != 255 && getRGB(image, k, j)[2] != 255 && getRGB(image, k, j)[0] != n1 && getRGB(image, k, j)[1] != n2 && getRGB(image, k, j)[2] != n3; k++)
+	for (int k = i; k < width && getRGB(image, k, j)[0] != 255 && getRGB(image, k, j)[1] != 255 && getRGB(image, k, j)[2] != 255 && getRGB(image, k, j)[0] != n1 && getRGB(image, k, j)[1] != n2 && getRGB(image, k, j)[2] != n3;k++)
 	{
 		setPixel(image, k, j, SDL_MapRGB(image->format, n1, n2, n3));
 		int l = j + 1;
