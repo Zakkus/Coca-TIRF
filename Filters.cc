@@ -397,7 +397,7 @@ void Compo_tr(SDL_Surface* image, int i, int j, int n1, int n2, int n3)
 	int width = image->w;
     int height = image->h;
 	for (int k = i; k < width && getRGB(image, k, j)[0] == 0 && getRGB(image, k, j)[1] == 0 && getRGB(image, k, j)[2] == 0; k++)
-		setPixel(image, i, j, SDL_MapRGB(image->format, n1, n2, n3));
+		setPixel(image, k, j, SDL_MapRGB(image->format, n1, n2, n3));
 	int l = j + 1;
 	if (l < height && getRGB(image, i, l)[0] == 0 && getRGB(image, i, l)[1] == 0 && getRGB(image, i, l)[2] == 0)
 		Compo_tr(image, i, l, n1, n2, n3);
