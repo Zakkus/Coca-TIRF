@@ -702,7 +702,7 @@ void Compo(SDL_Surface* image)
 			}
 			}
 		}
-		for (int j = height - 2; j >= 0; j--)
+		/*for (int j = height - 2; j >= 0; j--)
 		for (int i = width - 2; i >= 0; i--)
 		{
 			if (getRGB(tmp, i, j)[0] == 0)
@@ -754,7 +754,7 @@ void Compo(SDL_Surface* image)
 				}
 			}
 			}
-		}
+		}*/
 		k++;
 	}
 }
