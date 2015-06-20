@@ -31,6 +31,7 @@ void Compo_bl(SDL_Surface* image);
 std::vector<std::pair<int, int> > Findall(SDL_Surface* image, int n1, int n2, int n3);
 void frame_component(SDL_Surface *image, SDL_Surface *final_image, int largeur, int longueur);
 bool CheckPercent(SDL_Surface* img, int xmin, int ymin, int l, int L);
+void SupprCompo(SDL_Surface* image, std::vector<int> compo);
 //à suivre, détecter les blocs de texte
 
 #endif // !FILTERS_HH

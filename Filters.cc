@@ -547,6 +547,8 @@ void ColorCompo(SDL_Surface* img, std::vector<int> compo)
 //Dis si la composante à des dimensions qui correspondent à celle d'une canette
 bool CheckCompo(int l, int L)
 {
+    if (l == 0 || L == 0)
+        return false;
     if (l > L)
         return ((100 *L) / l > 51 && (100*L) / l < 70);
     else
@@ -806,8 +808,20 @@ bool CheckPercent(SDL_Surface* img, int xmin, int ymin, int l, int L)
 			if (getRGB(img, i, j)[0] == 255)
 				nbwhite++;
 		}
-		
 	double percent = (double)nbwhite / (double)(l * L);
     std::cout << "percent: " << percent << std::endl;
 	return percent <= 0.5 && percent >= 0.23;
+}
+
+void SupprCompo(SDL_Surface* image, std::vector<int> compo)
+{
+	int height = image->h;
+	int width = image->w;
+	for (int i = 0; i < width; i++)
+		for (int j = 0; j < height; j++)
+		{
+			std::vector<Uint8> rgb = getRGB(image, i ,j);
+			if (compo[0] == rgb[0] && rgb[1] == compo[1] && rgb[2] == compo[2])
+				setPixel(image, i, j, SDL_MapRGB(image->format, 255, 255, 255));
+		}
 }
