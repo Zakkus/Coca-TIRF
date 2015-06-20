@@ -803,6 +803,6 @@ bool CheckPercent(SDL_Surface* img, int xmin, int ymin, int l, int L)
 				nbwhite++;
 		}
 		
-	double percent = nbwhite /. (l * L);
+	double percent = (double)nbwhite / (double)(l * L);
 	return percent <= 0.5 && percent >= 0.3;
 }
