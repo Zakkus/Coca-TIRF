@@ -57,7 +57,7 @@ void Hline(SDL_Surface* image, int x, int y, int w)
     area.w = w;
     area.h = 5;
 
-    SDL_FillRect(image, &area, SDL_MapRGB(image->format, 0, 0, 0));
+    SDL_FillRect(image, &area, SDL_MapRGB(image->format, 255, 0, 0));
 }
 
 void Vline(SDL_Surface* image, int x, int y, int h)
@@ -68,7 +68,7 @@ void Vline(SDL_Surface* image, int x, int y, int h)
     area.w = 5;
     area.h = h;
 
-    SDL_FillRect(image, &area, SDL_MapRGB(image->format, 0, 0, 0));
+    SDL_FillRect(image, &area, SDL_MapRGB(image->format, 255, 0, 0));
 }
 
 void countRedWhiteRation(SDL_Surface* image)
@@ -90,4 +90,12 @@ void countRedWhiteRation(SDL_Surface* image)
     std::cout << "RED : " << red << std::endl;
     std::cout << "WHITE : " << white << std::endl;
     std::cout << "RATIO : " << (100 * red) / (width * height);
+}
+
+void draw_rectangle(SDL_Surface *image, int largeur, int longueur, int i, int j)
+{
+    Hline(image, i, j, largeur);
+    Vline(image, i, j, longueur);
+    Hline(image, i, j + longueur, largeur);
+    Vline(image, i + largeur, j, longueur);
 }

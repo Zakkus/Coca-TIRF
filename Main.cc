@@ -8,7 +8,8 @@ int main(int argc, char* argv[])
     //SDL_Surface* image = loadImage("D:/Work/TIRF/Coca/Coca/simple/HPIM4430.JPG");
     //SDL_Surface* image = loadImage("D:/Work/TIRF/Coca/Coca/simple/HPIM4433.JPG");
     SDL_Surface* image = loadImage(argv[1]);
-//	SDL_Surface* save = loadImage(argv[1]);
+    SDL_Surface* final_image = loadImage(argv[1]);
+    //	SDL_Surface* save = loadImage(argv[1]);
     //SDL_Surface* image = loadImage("D:/Work/TIRF/Coca/Coca/moins_simple/HPIM4422.JPG");
     //grayScale(image);
     //sobelFilter(image);
@@ -18,10 +19,10 @@ int main(int argc, char* argv[])
 
     //SDL_Surface* image = loadImage("D:/Work/TIRF/can.jpg");
     redFilter(image);
-//    redFilter(save);
+    //    redFilter(save);
 
-    Red_to_Black(image);
-//    Red_to_Black(save);
+    //   Red_to_Black(image);
+    //    Red_to_Black(save);
 
     erode(image, 0,4);
     dilate(image, 0,4);
@@ -29,33 +30,38 @@ int main(int argc, char* argv[])
     dilate(image, 4,0);
     erode(image, 3,3);
     dilate(image, 3,3);
-    
+
     dilate(image,5,0);
     erode(image,5,0);
-//    more_frontier(image);
-//
+    //    more_frontier(image);
+    //
 
     //MaxCompo(image);
-	Compo(image);
-	std::vector<int>* compo = ChooseCompo(image);
-	
-	std::cout << compo->at(0) << std::endl;
-	std::cout << compo->at(1) << std::endl;
-	
-	ColorCompo(image, *compo);
-	
-	int L = getL(image);
-	std::cout << L << std::endl;
-	int l = getl(image);
-	std::cout << l <<std::endl;
-	
-	std::cout << CheckCompo(L, l) << std::endl;
-	
-	SDL_Window* window = createWindow();
-	if (window == NULL)
-		return 1;
-    displayImage(window, image);
-	SDL_Delay(3000);
+    Compo(image);
+    std::vector<int>* compo = ChooseCompo(image);
+
+    std::cout << compo->at(0) << std::endl;
+    std::cout << compo->at(1) << std::endl;
+
+    ColorCompo(image, *compo);
+
+    int min_left, min_up;
+
+    int L = getL(image, min_left);
+    std::cout << L << std::endl;
+    int l = getl(image, min_up);
+    std::cout << l <<std::endl;
+
+    std::cout << CheckCompo(L, l) << std::endl;
+
+    //frame_component(image, final_image, L, l);
+
+    draw_rectangle(final_image, L, l, min_left, min_up);
+    SDL_Window* window = createWindow();
+    if (window == NULL)
+        return 1;
+    displayImage(window, final_image);
+    SDL_Delay(3000);
 
     return 0;
 }
