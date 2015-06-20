@@ -3,6 +3,7 @@
 #include"SDL_init.hh"
 #include<algorithm>
 #include<iostream>
+#include<tuple>
 
 void hsv_to_rgb(int h, int s, int v, int& r, int& g, int& b);
 void rgb_to_hsv(int r, int g, int b, int& h, int& s, int& v);

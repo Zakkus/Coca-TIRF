@@ -39,37 +39,74 @@ int main(int argc, char* argv[])
 
     //MaxCompo(image);
     Compo(image);
-	//displayImage(createWindow(), image);
-	int i = 0;
-	while (i < 5)
-	{
-		SDL_Surface* tmp = SDL_CreateRGBSurface(0,image->w,image->h,32,0,0,0,0);
+    //displayImage(createWindow(), image);
+    int i = 0;
+    std::vector<std::tuple<int,float, int,int,int,int> > percents;
+    while (i < 5)
+    {
+        SDL_Surface* tmp = SDL_CreateRGBSurface(0,image->w,image->h,32,0,0,0,0);
         SDL_BlitSurface(image, NULL, tmp, NULL);
 
-		std::vector<int>* compo = ChooseCompo(tmp);
+        std::vector<int>* compo = ChooseCompo(tmp);
 
-		std::cout << compo->at(0) << std::endl;
-		std::cout << compo->at(1) << std::endl;
+        std::cout << compo->at(0) << std::endl;
+        std::cout << compo->at(1) << std::endl;
 
-		ColorCompo(tmp, *compo);
+        ColorCompo(tmp, *compo);
 
-		int min_left, min_up;
+        int min_left, min_up;
 
-		int L = getL(tmp, min_left);
-		std::cout << L << std::endl;
-		int l = getl(tmp, min_up);
-		std::cout << l <<std::endl;
+        int L = getL(tmp, min_left);
+        std::cout << L << std::endl;
+        int l = getl(tmp, min_up);
+        std::cout << l <<std::endl;
 
         std::cout << "coords: " << min_left << " " << min_up << std::endl;
         std::cout << CheckCompo(L, l) << std::endl;
 
         //frame_component(image, final_image, L, l);
-        //if (CheckCompo(L,l))
-            if (CheckPercent(image, min_left, min_up, l, L))
+        int com = CheckCompo(L,l);
+        float white = CheckPercent(image, min_left, min_up, l, L);
+        percents.push_back(std::make_tuple(com,white,L,l,min_left,min_up));
+
+      /*      {
                 draw_rectangle(final_image, L, l, min_left, min_up);
+                break;
+            }*/
         SupprCompo(image, *compo);
-		i++;
-	}
+        i++;
+    }
+
+    for (i = 0; i < 5; i++)
+    {
+        float white = std::get<1>(percents[i]);
+        int com = std::get<0>(percents[i]);
+        int L = std::get<2>(percents[i]), l = std::get<3>(percents[i]);
+        int min_left = std::get<4>(percents[i]), min_up = std::get<5>(percents[i]);
+        if (white <= 0.5 && white >= 0.23)
+        {
+            if ((com <= 65 && com >= 55))
+            {
+                draw_rectangle(final_image, L, l, min_left, min_up);
+                break;
+            }
+        }
+        else
+            percents.erase(percents.begin()+i);
+    }
+                      
+    std::sort(begin(percents), end(percents),
+            [](std::tuple<int,float,int,int,int,int> const &t1,
+               std::tuple<int,float,int,int,int,int> const &t2)
+            {
+                return std::get<2>(t1) > std::get<2>(t2);
+            });
+    draw_rectangle(final_image,
+                   std::get<2>(percents[0]),
+                   std::get<3>(percents[0]),
+                   std::get<4>(percents[0]),
+                   std::get<5>(percents[0]));
+                      
     SDL_Window* window = createWindow();
     if (window == NULL)
         return 1;

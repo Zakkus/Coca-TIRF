@@ -23,14 +23,14 @@ std::vector<int>* ChooseCompo(SDL_Surface* image);
 void ColorCompo(SDL_Surface* image, std::vector<int> compo);
 int getL(SDL_Surface* img, int &min_left);
 int getl(SDL_Surface* img, int &min_up);
-bool CheckCompo(int l, int L);
+int CheckCompo(int l, int L);
 void Compo_lr(SDL_Surface* image, int i, int j, int n1, int n2, int n3);
 void Compo_tb(SDL_Surface* image, int i, int j, int n1, int n2, int n3);
 void Compo_tr(SDL_Surface* image, int i, int j, int n1, int n2, int n3);
 void Compo_bl(SDL_Surface* image);
 std::vector<std::pair<int, int> > Findall(SDL_Surface* image, int n1, int n2, int n3);
 void frame_component(SDL_Surface *image, SDL_Surface *final_image, int largeur, int longueur);
-bool CheckPercent(SDL_Surface* img, int xmin, int ymin, int l, int L);
+float CheckPercent(SDL_Surface* img, int xmin, int ymin, int l, int L);
 void SupprCompo(SDL_Surface* image, std::vector<int> compo);
 //à suivre, détecter les blocs de texte
 

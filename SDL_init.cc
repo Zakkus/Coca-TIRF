@@ -30,7 +30,7 @@ void displayImage(SDL_Window* window, SDL_Surface* image)
     SDL_RenderCopy(renderer, texture, NULL, NULL);
     SDL_RenderPresent(renderer);
 
-    SDL_Delay(5000);
+    SDL_Delay(1000);
 }
 
 //pompé sur le site du zéro
