@@ -65,6 +65,7 @@ int main(int argc, char* argv[])
 		if (CheckCompo(L,l) && CheckPercent(tmp, min_left, min_up, l, L))
 			draw_rectangle(final_image, L, l, min_left, min_up);
 		SupprCompo(image, *compo);
+		i++;
 	}
     SDL_Window* window = createWindow();
     if (window == NULL)
