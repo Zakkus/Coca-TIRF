@@ -39,25 +39,33 @@ int main(int argc, char* argv[])
     //MaxCompo(image);
     Compo(image);
 	displayImage(createWindow(), image);
-    std::vector<int>* compo = ChooseCompo(image);
+	int i = 0;
+	while (i < 5)
+	{
+		SDL_Surface* tmp = SDL_CreateRGBSurface(0,image->w,image->h,32,0,0,0,0);
+		SDL_BlitSurface(image, NULL, tmp, NULL);
+	
+		std::vector<int>* compo = ChooseCompo(tmp);
 
-    std::cout << compo->at(0) << std::endl;
-    std::cout << compo->at(1) << std::endl;
+		std::cout << compo->at(0) << std::endl;
+		std::cout << compo->at(1) << std::endl;
 
-    ColorCompo(image, *compo);
+		ColorCompo(tmp, *compo);
 
-    int min_left, min_up;
+		int min_left, min_up;
 
-    int L = getL(image, min_left);
-    std::cout << L << std::endl;
-    int l = getl(image, min_up);
-    std::cout << l <<std::endl;
+		int L = getL(tmp, min_left);
+		std::cout << L << std::endl;
+		int l = getl(tmp, min_up);
+		std::cout << l <<std::endl;
 
-    std::cout << CheckCompo(L, l) << std::endl;
+		std::cout << CheckCompo(L, l) << std::endl;
 
     //frame_component(image, final_image, L, l);
-	if (CheckCompo(L,l) && CheckPercent(image, min_left, min_up, l, L))
-		draw_rectangle(final_image, L, l, min_left, min_up);
+		if (CheckCompo(L,l) && CheckPercent(tmp, min_left, min_up, l, L))
+			draw_rectangle(final_image, L, l, min_left, min_up);
+		SupprCompo(image, *compo);
+	}
     SDL_Window* window = createWindow();
     if (window == NULL)
         return 1;

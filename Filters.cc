@@ -806,3 +806,16 @@ bool CheckPercent(SDL_Surface* img, int xmin, int ymin, int l, int L)
 	double percent = (double)nbwhite / (double)(l * L);
 	return percent <= 0.5 && percent >= 0.3;
 }
+
+void SupprCompo(SDL_Surface* image, std::vector<int> compo)
+{
+	int height = image->h;
+	int width = image->w;
+	for (int i = 0; i < width; i++)
+		for (int j = 0; j < height; j++)
+		{
+			std::vector<Uint8> rgb = getRGB(image, i ,j);
+			if (compo[0] == rgb[0] && rgb[1] == compo[1] && rgb[2] == compo[2])
+				setPixel(image, i, j, SDL_MapRGB(image->format, 255, 255, 255));
+		}
+}
