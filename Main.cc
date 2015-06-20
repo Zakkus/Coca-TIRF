@@ -55,8 +55,8 @@ int main(int argc, char* argv[])
     std::cout << CheckCompo(L, l) << std::endl;
 
     //frame_component(image, final_image, L, l);
-
-    draw_rectangle(final_image, L, l, min_left, min_up);
+	if (CheckCompo(L,l) && CheckPercent(image, min_left, min_up, l, L))
+		draw_rectangle(final_image, L, l, min_left, min_up);
     SDL_Window* window = createWindow();
     if (window == NULL)
         return 1;

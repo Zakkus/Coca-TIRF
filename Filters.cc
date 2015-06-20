@@ -791,3 +791,18 @@ void Compo(SDL_Surface* image)
         k++;
     }
 }
+
+
+bool CheckPercent(SDL_Surface* img, int xmin, int ymin, int l, int L)
+{
+	int nbwhite = 0;
+	for (int i = xmin; i < xmin + L; i ++)
+		for (int j = ymin; j < ymin + l; j ++)
+		{
+			if (getRGB(img, i, j)[0] == 255)
+				nbwhite++;
+		}
+		
+	double percent = nbwhite /. (l * L);
+	return percent <= 0.5 && percent >= 0.3;
+}
