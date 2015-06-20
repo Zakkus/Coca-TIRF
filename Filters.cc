@@ -48,7 +48,7 @@ void redFilter(SDL_Surface* image)
         {
             rgb = getRGB(image, i, j);
             setPixel(image, i, j, SDL_MapRGB(image->format, 255, 0, 0));
-            if (!(rgb[1] <= 100 && rgb[2] <= 100 && rgb[0] > 100))
+            if (!(rgb[1] <= 70 && rgb[2] <= 70 && rgb[0] > 100))
                 setPixel(image, i, j, SDL_MapRGB(image->format, 255, 255, 255));
             if (rgb[1] >= 200 && rgb[2] >= 200 && rgb[0] >= 200)
                 setPixel(image, i, j, SDL_MapRGB(image->format, 255, 255, 255));
@@ -547,7 +547,11 @@ void ColorCompo(SDL_Surface* img, std::vector<int> compo)
 //Dis si la composante à des dimensions qui correspondent à celle d'une canette
 bool CheckCompo(int l, int L)
 {
-    return (l * 2 >= L && l * 1.5 <= L) || (L * 2 >= l && L * 1.5 <= l);
+    if (l > L)
+        return ((100 *L) / l > 51 && (100*L) / l < 70);
+    else
+        return ((100 *l) / L > 51 && (100*l) / L < 70);
+    //return (l * 2 >= L && l * 1.5 <= L) || (L * 2 >= l && L * 1.5 <= l);
 }
 
 int getL(SDL_Surface* img, int &min_left)
@@ -804,5 +808,6 @@ bool CheckPercent(SDL_Surface* img, int xmin, int ymin, int l, int L)
 		}
 		
 	double percent = (double)nbwhite / (double)(l * L);
-	return percent <= 0.5 && percent >= 0.3;
+    std::cout << "percent: " << percent << std::endl;
+	return percent <= 0.5 && percent >= 0.23;
 }

@@ -24,6 +24,7 @@ int main(int argc, char* argv[])
     //   Red_to_Black(image);
     //    Red_to_Black(save);
 
+    dilate(image,2,0);
     erode(image, 0,4);
     dilate(image, 0,4);
     erode(image, 4,0);
@@ -52,16 +53,18 @@ int main(int argc, char* argv[])
     int l = getl(image, min_up);
     std::cout << l <<std::endl;
 
+    std::cout << "coords: " << min_left << " " << min_up << std::endl;
     std::cout << CheckCompo(L, l) << std::endl;
 
     //frame_component(image, final_image, L, l);
-	if (CheckCompo(L,l) && CheckPercent(image, min_left, min_up, l, L))
-		draw_rectangle(final_image, L, l, min_left, min_up);
+//	if (CheckCompo(L,l))
+        if (CheckPercent(image, min_left, min_up, l, L))
+            draw_rectangle(image, L, l, min_left, min_up);
     SDL_Window* window = createWindow();
     if (window == NULL)
         return 1;
-    displayImage(window, final_image);
-    SDL_Delay(3000);
+    displayImage(window, image);
+    SDL_Delay(1000);
 
     return 0;
 }
