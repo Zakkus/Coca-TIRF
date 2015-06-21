@@ -54,7 +54,7 @@ int main(int argc, char* argv[])
         std::cout << compo->at(1) << std::endl;
 
         ColorCompo(tmp, *compo);
-
+		displayImage(createWindow(), tmp);
         int min_left, min_up;
 
         int L = getL(tmp, min_left);
