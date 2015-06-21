@@ -47,7 +47,7 @@ int main(int argc, char* argv[])
     while (i < 5)
     {
 		SDL_Surface* tmp = SDL_CreateRGBSurface(0,width,height,32,0,0,0,0);
-		SDL_BlitSurface(img, NULL, tmp, NULL);
+		SDL_BlitSurface(image, NULL, tmp, NULL);
 		std::pair<int,int> p = GetMaxCompo(compos);
 
         //std::cout << compo->at(0) << std::endl;
