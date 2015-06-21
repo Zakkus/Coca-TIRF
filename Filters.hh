@@ -9,6 +9,7 @@
 
 void more_frontier(SDL_Surface *image);
 void redFilter(SDL_Surface* image);
+void whiteFilter(SDL_Surface* image, int L, int l, int min_left, int min_up);
 void redFilter2(SDL_Surface* image);
 void grayScale(SDL_Surface* image);
 void sobelFilter(SDL_Surface* image);

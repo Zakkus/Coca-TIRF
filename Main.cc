@@ -9,6 +9,7 @@ int main(int argc, char* argv[])
     //SDL_Surface* image = loadImage("D:/Work/TIRF/Coca/Coca/simple/HPIM4433.JPG");
     SDL_Surface* image = loadImage(argv[1]);
     SDL_Surface* final_image = loadImage(argv[1]);
+    SDL_Surface* white_image = loadImage(argv[1]);
     //	SDL_Surface* save = loadImage(argv[1]);
     //SDL_Surface* image = loadImage("D:/Work/TIRF/Coca/Coca/moins_simple/HPIM4422.JPG");
     //grayScale(image);
@@ -77,8 +78,10 @@ int main(int argc, char* argv[])
 
         //frame_component(image, final_image, L, l);
         int com = CheckCompo(L,l);
-        float white = CheckPercent(tmp, min_left, min_up, l, L);
+        whiteFilter(white_image, L, l, min_left, min_up);
+        float white = CheckPercent(white_image, min_left, min_up, l, L);
         percents.push_back(std::make_tuple(com,white,L,l,min_left,min_up));
+		displayImage(createWindow(), white_image);
 
       /*      {
                 draw_rectangle(final_image, L, l, min_left, min_up);
@@ -94,7 +97,7 @@ int main(int argc, char* argv[])
         int proportion = std::get<0>(percents[i]);
         int L = std::get<2>(percents[i]), l = std::get<3>(percents[i]);
         int min_left = std::get<4>(percents[i]), min_up = std::get<5>(percents[i]);
-        if (white <= 0.5 && white >= 0.23)
+        if (white <= 0.25 && white > 0.1)
         {
             if (proportion <= 65 && proportion >= 55)
             {
@@ -104,7 +107,10 @@ int main(int argc, char* argv[])
             }
         }
         else
+        {
             percents.erase(percents.begin()+i);
+            i--;
+        }
     }
 
     if (!done && !percents.empty())
@@ -121,7 +127,7 @@ int main(int argc, char* argv[])
         int proportion = std::get<0>(percents[0]);
         int L = std::get<2>(percents[0]), l = std::get<3>(percents[0]);
         int min_left = std::get<4>(percents[0]), min_up = std::get<5>(percents[0]);
-        if (proportion <= 70 && proportion >= 51)
+        if (proportion <= 85 && proportion >= 51)
             draw_rectangle(final_image, L, l, min_left, min_up);
     }
 

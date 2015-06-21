@@ -58,6 +58,22 @@ void redFilter(SDL_Surface* image)
         }
 }
 
+void whiteFilter(SDL_Surface* image, int L, int l, int min_left, int min_up)
+{
+    int width = image->w;
+    int height = image->h;
+    std::vector<Uint8> rgb;
+    SDL_Surface* tmp = new SDL_Surface(*image);
+
+    for (int i = min_left; i < min_left + L; i++)
+        for (int j = min_up; j < min_up + l; j++)
+        {
+            rgb = getRGB(image, i, j);
+            if (rgb[1] >= 127 && rgb[2] >= 127 && rgb[0] >= 127)
+                setPixel(image, i, j, SDL_MapRGB(image->format, 255, 255, 255));
+        }
+}
+
 //Red Filter avec HSV
 void redFilter2(SDL_Surface* image)
 {
