@@ -45,7 +45,7 @@ int main(int argc, char* argv[])
     bool done = false;
     std::vector<std::tuple<int,float, int,int,int,int> > percents;
 	std::map<int, int> compos = ChooseCompo(image);
-    while (i < 5)
+    while (i < 10)
     {
 		SDL_Surface* tmp = SDL_CreateRGBSurface(0,image->w,image->h,32,0,0,0,0);
 		SDL_BlitSurface(image, NULL, tmp, NULL);
