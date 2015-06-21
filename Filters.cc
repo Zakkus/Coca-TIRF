@@ -797,11 +797,19 @@ float CheckPercent(SDL_Surface* img, int xmin, int ymin, int l, int L)
 {
 	int nbwhite = 0;
 	for (int i = xmin; i < xmin + L; i ++)
+	{
+		int tmpwhite = 0;
+		int black = 0;
 		for (int j = ymin; j < ymin + l; j ++)
 		{
-			if (getRGB(img, i, j)[0] == 255)
-				nbwhite++;
+			if (black == 0 && getRGB(img,i,j)[0] != 255)
+				black = 1;
+			if (black == 1 && getRGB(img, i, j)[0] == 255)
+				tmpwhite++;
+			if (black == 1 && getRGB(img,i,j)[0] != 255)
+				nbwhite += tmpwhite;
 		}
+	}
 	double percent = (double)nbwhite / (double)(l * L);
     std::cout << "percent: " << percent << std::endl;
 	return percent;// <= 0.5 && percent >= 0.23;
