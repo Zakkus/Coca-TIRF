@@ -86,7 +86,7 @@ int main(int argc, char* argv[])
         int min_left = std::get<4>(percents[i]), min_up = std::get<5>(percents[i]);
         if (white <= 0.5 && white >= 0.23)
         {
-            if ((proportion <= 65 && proportion >= 55))
+            if ((proportion))
             {
                 draw_rectangle(final_image, L, l, min_left, min_up);
                 done = true;
