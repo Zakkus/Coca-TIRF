@@ -810,6 +810,8 @@ float CheckPercent(SDL_Surface* img, int xmin, int ymin, int l, int L)
 				nbwhite += tmpwhite;
 		}
 	}
+	std::cout << "nbwhite: " << nbwhite << std::endl;
+	std::cout << "L * l=" << L*l << std::endl;
 	double percent = (double)nbwhite / (double)(l * L);
     std::cout << "percent: " << percent << std::endl;
 	return percent;// <= 0.5 && percent >= 0.23;
