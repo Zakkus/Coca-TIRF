@@ -39,7 +39,7 @@ int main(int argc, char* argv[])
 
     //MaxCompo(image);
     Compo(image);
-    //displayImage(createWindow(), image);
+    displayImage(createWindow(), image);
     int i = 0;
     bool done = false;
     std::vector<std::tuple<int,float, int,int,int,int> > percents;
