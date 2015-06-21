@@ -43,9 +43,9 @@ int main(int argc, char* argv[])
    // displayImage(createWindow(), image);
     int i = 0;
     bool done = false;
-    std::vector<std::tuple<int,float, int,int,int,int> > percents;
+    std::vector<std::tuple<int,std::pair<float,float>, int,int,int,int> > percents;
 	std::map<int, int> compos = ChooseCompo(image);
-    while (i < 10)
+    while (i < 5)
     {
 		SDL_Surface* tmp = SDL_CreateRGBSurface(0,image->w,image->h,32,0,0,0,0);
 		SDL_BlitSurface(image, NULL, tmp, NULL);
@@ -79,8 +79,10 @@ int main(int argc, char* argv[])
         //frame_component(image, final_image, L, l);
         int com = CheckCompo(L,l);
         whiteFilter(white_image, L, l, min_left, min_up);
-        float white = CheckPercent(white_image, min_left, min_up, l, L);
-        percents.push_back(std::make_tuple(com,white,L,l,min_left,min_up));
+        float white2 = CheckPercent(white_image, min_left, min_up, l, L);
+        float white1 = CheckPercent(tmp, min_left, min_up, l, L);
+        percents.push_back(std::make_tuple(com,std::make_pair(white1,white2),
+                           L,l,min_left,min_up));
 		displayImage(createWindow(), white_image);
 
       /*      {
@@ -93,11 +95,12 @@ int main(int argc, char* argv[])
 
     for (i = 0; i < percents.size(); i++)
     {
-        float white = std::get<1>(percents[i]);
+        std::pair<float,float> white = std::get<1>(percents[i]);
         int proportion = std::get<0>(percents[i]);
         int L = std::get<2>(percents[i]), l = std::get<3>(percents[i]);
         int min_left = std::get<4>(percents[i]), min_up = std::get<5>(percents[i]);
-        if (white <= 0.25 && white > 0.1)
+        if ((white.second <= 0.271 && white.second > 0.1) ||
+            (white.first <= 0.271 && white.first > 0.1))
         {
             if (proportion <= 65 && proportion >= 55)
             {
@@ -116,14 +119,14 @@ int main(int argc, char* argv[])
     if (!done && !percents.empty())
     {
         std::sort(begin(percents), end(percents),
-                [](std::tuple<int,float,int,int,int,int> const &t1,
-                   std::tuple<int,float,int,int,int,int> const &t2)
+                [](std::tuple<int,std::pair<float,float>,int,int,int,int> const &t1,
+                   std::tuple<int,std::pair<float,float>,int,int,int,int> const &t2)
                 {
                     return std::abs(std::get<2>(t1) - 60) >
                            std::abs(std::get<2>(t2) - 60);
                 });
 
-        float white = std::get<1>(percents[0]);
+        std::pair<float,float> white = std::get<1>(percents[0]);
         int proportion = std::get<0>(percents[0]);
         int L = std::get<2>(percents[0]), l = std::get<3>(percents[0]);
         int min_left = std::get<4>(percents[0]), min_up = std::get<5>(percents[0]);

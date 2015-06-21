@@ -69,7 +69,7 @@ void whiteFilter(SDL_Surface* image, int L, int l, int min_left, int min_up)
         for (int j = min_up; j < min_up + l; j++)
         {
             rgb = getRGB(image, i, j);
-            if (rgb[1] >= 127 && rgb[2] >= 127 && rgb[0] >= 127)
+            if (rgb[1] >= 120 && rgb[2] >= 120 && rgb[0] >= 120)
                 setPixel(image, i, j, SDL_MapRGB(image->format, 255, 255, 255));
         }
 }
