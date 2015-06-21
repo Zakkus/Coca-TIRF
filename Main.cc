@@ -99,8 +99,8 @@ int main(int argc, char* argv[])
         int proportion = std::get<0>(percents[i]);
         int L = std::get<2>(percents[i]), l = std::get<3>(percents[i]);
         int min_left = std::get<4>(percents[i]), min_up = std::get<5>(percents[i]);
-        if ((white.second <= 0.271 && white.second > 0.1) ||
-            (white.first <= 0.271 && white.first > 0.1))
+        if ((white.second <= 0.271 && white.second > 0.1 && white.first < 0.34 && white.first > 0.1) ||
+            (white.first <= 0.23 && white.first > 0.1 && white.second > 0.1))
         {
             if (proportion <= 65 && proportion >= 55)
             {
