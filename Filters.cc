@@ -482,44 +482,34 @@ void Compo_bl(SDL_Surface* image)
         }
 }
 
-std::vector<int>* ChooseCompo(SDL_Surface* img)
+std::map<int, int> ChooseCompo(SDL_Surface* img)
 {
-    std::vector<int>* maxcompo = new std::vector<int>(3,0);
-    int n = 0;
-    int width = img->w;
-    int height = img->h;
-    int c1 = 0;
-    int c2 = 0;
-    int c3 = 0;
-    int many = 0;
-    std::vector<Uint8> rgb = std::vector<Uint8>();
-    for (int i = 0; i < width; i++)
-        for (int j = 0; j < height; j++)
-        {
-            rgb = getRGB(img,i,j);
-            if (rgb[0] != 255)
-            {
-                if (c1 != rgb[0] || c2 != rgb[1] || c3 != rgb[2] )
-                {
-                    many = 1;
-                    c1 = rgb[0];
-                    c2 = rgb[1];
-                    c3 = rgb[2];
-                }
-                else
-                {
-                    many++;
-                    if (n < many)
-                    {
-                        n = many;
-                        maxcompo->at(0) = c1;
-                        maxcompo->at(1) = c2;
-                        maxcompo->at(2) = c3;
-                    }
-                }
-            }
-        }
-    return maxcompo;
+    std::map<int, int>  compos = std::map<int, int>();
+	int height = img->h;
+	int width = img->w;
+	std::vector<Uint8> rgb = std::vector<Uint8>();
+	for (int i = 0; i < width; i++)
+		for (int j = 0; j < height; j++)
+		{
+			rgb = getRGB(img, i, j);
+			std::map<int, int>::iterator it = compos.find(rgb[2] * 1000000 + rgb[1] * 1000 + rgb[0]);
+			if (!it != compos.end())
+				it->second = it->second + 1;
+			else
+				compos[rgb[2] * 1000000 + rgb[1] * 1000 + rgb[0]] = 1;
+		}
+	return compos;
+}
+
+std::pair<int, int> GetMaxCompo(std::map<int, int> compos)
+{
+	std::pair<int, int> max = std::make_pair(0,0);
+	for (std::map<int, int>::iterator it = compos.begin(); it != compos.end(); it++)
+	{
+		int m = std::max(max.second, it->second);
+		if (m != max.second)
+			max = *it;
+	}
 }
 
 void ColorCompo(SDL_Surface* img, std::vector<int> compo)

@@ -43,12 +43,10 @@ int main(int argc, char* argv[])
     int i = 0;
     bool done = false;
     std::vector<std::tuple<int,float, int,int,int,int> > percents;
+	std::map<int, int> compos = ChooseCompo(tmp);
     while (i < 5)
     {
-        SDL_Surface* tmp = SDL_CreateRGBSurface(0,image->w,image->h,32,0,0,0,0);
-        SDL_BlitSurface(image, NULL, tmp, NULL);
-
-        std::vector<int>* compo = ChooseCompo(tmp);
+		std::pair<int,int> p = GetMaxCompo(compos);
 
         std::cout << compo->at(0) << std::endl;
         std::cout << compo->at(1) << std::endl;
@@ -75,7 +73,7 @@ int main(int argc, char* argv[])
                 draw_rectangle(final_image, L, l, min_left, min_up);
                 break;
             }*/
-        SupprCompo(image, *compo);
+        compos.erase(p.first);
         i++;
     }
 

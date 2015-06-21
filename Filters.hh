@@ -5,6 +5,7 @@
 #include<list>
 #include<iostream>
 #include<utility>
+#include<map>
 
 void more_frontier(SDL_Surface *image);
 void redFilter(SDL_Surface* image);
@@ -33,6 +34,7 @@ void frame_component(SDL_Surface *image, SDL_Surface *final_image, int largeur, 
 float CheckPercent(SDL_Surface* img, int xmin, int ymin, int l, int L);
 void SupprCompo(SDL_Surface* image, std::vector<int> compo);
 bool InnerWhite(SDL_Surface* img, int xmin, int ymin, int l, int L);
+std::pair<int, int> GetMaxCompo(std::map<int, int> compos);
 //à suivre, détecter les blocs de texte
 
 #endif // !FILTERS_HH
