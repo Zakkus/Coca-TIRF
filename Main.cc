@@ -41,6 +41,7 @@ int main(int argc, char* argv[])
     Compo(image);
     //displayImage(createWindow(), image);
     int i = 0;
+    bool done = false;
     std::vector<std::tuple<int,float, int,int,int,int> > percents;
     while (i < 5)
     {
@@ -80,33 +81,41 @@ int main(int argc, char* argv[])
     for (i = 0; i < 5; i++)
     {
         float white = std::get<1>(percents[i]);
-        int com = std::get<0>(percents[i]);
+        int proportion = std::get<0>(percents[i]);
         int L = std::get<2>(percents[i]), l = std::get<3>(percents[i]);
         int min_left = std::get<4>(percents[i]), min_up = std::get<5>(percents[i]);
         if (white <= 0.5 && white >= 0.23)
         {
-            if ((com <= 65 && com >= 55))
+            if ((proportion <= 65 && proportion >= 55))
             {
                 draw_rectangle(final_image, L, l, min_left, min_up);
+                done = true;
                 break;
             }
         }
         else
             percents.erase(percents.begin()+i);
     }
-                      
-    std::sort(begin(percents), end(percents),
-            [](std::tuple<int,float,int,int,int,int> const &t1,
-               std::tuple<int,float,int,int,int,int> const &t2)
-            {
-                return std::get<2>(t1) > std::get<2>(t2);
-            });
-    draw_rectangle(final_image,
-                   std::get<2>(percents[0]),
-                   std::get<3>(percents[0]),
-                   std::get<4>(percents[0]),
-                   std::get<5>(percents[0]));
-                      
+
+    if (!done)
+    {
+        std::sort(begin(percents), end(percents),
+                [](std::tuple<int,float,int,int,int,int> const &t1,
+                   std::tuple<int,float,int,int,int,int> const &t2)
+                {
+                    return std::abs(std::get<2>(t1) - 60) >
+                           std::abs(std::get<2>(t2) - 60);
+                });
+
+        float white = std::get<1>(percents[0]);
+        int proportion = std::get<0>(percents[0]);
+        int L = std::get<2>(percents[0]), l = std::get<3>(percents[0]);
+        int min_left = std::get<4>(percents[0]), min_up = std::get<5>(percents[0]);
+        if (proportion <= 70 && proportion >= 51)
+            draw_rectangle(final_image, L, l, min_left, min_up);
+    }
+
+
     SDL_Window* window = createWindow();
     if (window == NULL)
         return 1;
