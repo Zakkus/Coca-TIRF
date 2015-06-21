@@ -1,8 +1,6 @@
 # Coca-TIRF
-Image processing project
-Detect a Coca can in a picture using machine learning algorithms
 
-
-Hough Transform (test)
-
-Other filter to find
+Comment utiliser notre projet:
+Le Makefile suffit à créer l'executable coca
+L'executable prend en argument l'image à analyser
+Le make clean supprime les binaires générés.
