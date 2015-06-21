@@ -838,5 +838,5 @@ bool InnerWhite(SDL_Surface* img, int xmin, int ymin, int l, int L)
 		}
 	}
 	double percent = (double)inwhite / (double) (L * l);
-	return percent <= 0.5 && percent  >= 0.3;
+	return percent <= 0.4 && percent  >= 0.1;
 }
