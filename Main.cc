@@ -52,6 +52,9 @@ int main(int argc, char* argv[])
         //std::cout << compo->at(1) << std::endl;
 		std::vector<int> compo = std::vector<int>();
 		std::cout << p.first << std::endl;
+		compo.push_back(p.first % 1000);
+		compo.push_back((p.first / 1000) % 1000);
+		compo.push_back(p.first / 1000000);
         ColorCompo(image, compo);
 		displayImage(createWindow(), image);
         int min_left, min_up;
