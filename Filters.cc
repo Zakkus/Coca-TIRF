@@ -510,6 +510,7 @@ std::pair<int, int> GetMaxCompo(std::map<int, int> compos)
 		if (m != max.second)
 			max = *it;
 	}
+	return max;
 }
 
 void ColorCompo(SDL_Surface* img, std::vector<int> compo)
