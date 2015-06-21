@@ -120,7 +120,7 @@ int main(int argc, char* argv[])
     if (window == NULL)
         return 1;
     displayImage(window, final_image);
-    SDL_Delay(1000);
+    SDL_Delay(5000);
 
     return 0;
 }
