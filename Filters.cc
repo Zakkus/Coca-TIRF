@@ -822,15 +822,15 @@ void SupprCompo(SDL_Surface* image, std::vector<int> compo)
 
 bool InnerWhite(SDL_Surface* img, int xmin, int ymin, int l, int L)
 {
-	int height = image->h;
-	int width = image->w;
+	int height = img->h;
+	int width = img->w;
 	int inwhite = 0;
 	for (int i = xmin; i < xmin + L; i++)
 	{
 		int intheblack = 0;
 		for (int j = ymin; j < ymin + l; j++)
 		{
-			std::vector<Uint8> rgb = getRGB(image, i ,j);
+			std::vector<Uint8> rgb = getRGB(img, i ,j);
 			if (intheblack == 0 && rgb[0] != 255)
 				intheblack = 1;
 			if (intheblack == 1 && rgb[0] == 255)
