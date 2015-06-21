@@ -68,7 +68,8 @@ int main(int argc, char* argv[])
         //frame_component(image, final_image, L, l);
         int com = CheckCompo(L,l);
         float white = CheckPercent(image, min_left, min_up, l, L);
-        percents.push_back(std::make_tuple(com,white,L,l,min_left,min_up));
+		if (InnerWhite(image, min_left, min_up, l, L))
+			percents.push_back(std::make_tuple(com,white,L,l,min_left,min_up));
 
       /*      {
                 draw_rectangle(final_image, L, l, min_left, min_up);
@@ -86,7 +87,7 @@ int main(int argc, char* argv[])
         int min_left = std::get<4>(percents[i]), min_up = std::get<5>(percents[i]);
         if (white <= 0.5 && white >= 0.23)
         {
-            if ((proportion))
+            if (proportion)
             {
                 draw_rectangle(final_image, L, l, min_left, min_up);
                 done = true;

@@ -32,6 +32,7 @@ std::vector<std::pair<int, int> > Findall(SDL_Surface* image, int n1, int n2, in
 void frame_component(SDL_Surface *image, SDL_Surface *final_image, int largeur, int longueur);
 float CheckPercent(SDL_Surface* img, int xmin, int ymin, int l, int L);
 void SupprCompo(SDL_Surface* image, std::vector<int> compo);
+bool InnerWhite(SDL_Surface* img, int xmin, int ymin, int l, int L);
 //à suivre, détecter les blocs de texte
 
 #endif // !FILTERS_HH
