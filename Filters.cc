@@ -530,7 +530,7 @@ void ColorCompo(SDL_Surface* img, std::vector<int> compo)
     for (int i = 0; i < width; i++)
         for (int j = 0; j < height; j++)
         {
-            rgb = getRGB(img,i,j);
+            rgb = getRGB(tmp,i,j);
             if (rgb[0] == c1 && rgb[1] == c2 && rgb[2] == c3)
                 setPixel(img, i, j, SDL_MapRGB(img->format, 0,0,0));
             else
