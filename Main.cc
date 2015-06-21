@@ -46,6 +46,8 @@ int main(int argc, char* argv[])
 	std::map<int, int> compos = ChooseCompo(image);
     while (i < 5)
     {
+		SDL_Surface* tmp = SDL_CreateRGBSurface(0,width,height,32,0,0,0,0);
+		SDL_BlitSurface(img, NULL, tmp, NULL);
 		std::pair<int,int> p = GetMaxCompo(compos);
 
         //std::cout << compo->at(0) << std::endl;
@@ -61,13 +63,13 @@ int main(int argc, char* argv[])
 		compo.push_back(p.first % 1000);
 		compo.push_back((p.first / 1000) % 1000);
 		compo.push_back(p.first / 1000000);
-        ColorCompo(image, compo);
-		displayImage(createWindow(), image);
+        ColorCompo(tmp, compo);
+		displayImage(createWindow(), tmp);
         int min_left, min_up;
 
-        int L = getL(image, min_left);
+        int L = getL(tmp, min_left);
         std::cout << L << std::endl;
-        int l = getl(image, min_up);
+        int l = getl(tmp, min_up);
         std::cout << l <<std::endl;
 
         std::cout << "coords: " << min_left << " " << min_up << std::endl;
@@ -75,8 +77,8 @@ int main(int argc, char* argv[])
 
         //frame_component(image, final_image, L, l);
         int com = CheckCompo(L,l);
-        float white = CheckPercent(image, min_left, min_up, l, L);
-		if (InnerWhite(image, min_left, min_up, l, L))
+        float white = CheckPercent(tmp, min_left, min_up, l, L);
+		if (InnerWhite(tmp, min_left, min_up, l, L))
 			percents.push_back(std::make_tuple(com,white,L,l,min_left,min_up));
 
       /*      {
