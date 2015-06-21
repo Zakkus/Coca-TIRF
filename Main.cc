@@ -46,7 +46,7 @@ int main(int argc, char* argv[])
 	std::map<int, int> compos = ChooseCompo(image);
     while (i < 5)
     {
-		SDL_Surface* tmp = SDL_CreateRGBSurface(0,width,height,32,0,0,0,0);
+		SDL_Surface* tmp = SDL_CreateRGBSurface(0,image->w,image->h,32,0,0,0,0);
 		SDL_BlitSurface(image, NULL, tmp, NULL);
 		std::pair<int,int> p = GetMaxCompo(compos);
 
