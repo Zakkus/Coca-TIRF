@@ -20,7 +20,7 @@ void erode(SDL_Surface* image, int dimx, int dimy);
 void MaxCompo(SDL_Surface* image);
 void Compo(SDL_Surface* image);
 void TraceRekt(SDL_Surface* image);
-std::vector<int>* ChooseCompo(SDL_Surface* image);
+std::map<int,int> ChooseCompo(SDL_Surface* image);
 void ColorCompo(SDL_Surface* image, std::vector<int> compo);
 int getL(SDL_Surface* img, int &min_left);
 int getl(SDL_Surface* img, int &min_up);

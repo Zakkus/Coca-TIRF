@@ -43,21 +43,24 @@ int main(int argc, char* argv[])
     int i = 0;
     bool done = false;
     std::vector<std::tuple<int,float, int,int,int,int> > percents;
-	std::map<int, int> compos = ChooseCompo(tmp);
+	std::map<int, int> compos = ChooseCompo(image);
     while (i < 5)
     {
 		std::pair<int,int> p = GetMaxCompo(compos);
 
-        std::cout << compo->at(0) << std::endl;
-        std::cout << compo->at(1) << std::endl;
-
-        ColorCompo(tmp, *compo);
-		displayImage(createWindow(), tmp);
+        //std::cout << compo->at(0) << std::endl;
+        //std::cout << compo->at(1) << std::endl;
+		std::vector<int> compo = std::vector<int>();
+		compo.push_back(p.first % 1000);
+		compo.push_back((p.first / 1000) % 1000);
+		compo.push_back(p.first / 1000000);
+        ColorCompo(image, compo);
+		displayImage(createWindow(), image);
         int min_left, min_up;
 
-        int L = getL(tmp, min_left);
+        int L = getL(image, min_left);
         std::cout << L << std::endl;
-        int l = getl(tmp, min_up);
+        int l = getl(image, min_up);
         std::cout << l <<std::endl;
 
         std::cout << "coords: " << min_left << " " << min_up << std::endl;
@@ -65,8 +68,8 @@ int main(int argc, char* argv[])
 
         //frame_component(image, final_image, L, l);
         int com = CheckCompo(L,l);
-        float white = CheckPercent(tmp, min_left, min_up, l, L);
-		if (InnerWhite(tmp, min_left, min_up, l, L))
+        float white = CheckPercent(image, min_left, min_up, l, L);
+		if (InnerWhite(image, min_left, min_up, l, L))
 			percents.push_back(std::make_tuple(com,white,L,l,min_left,min_up));
 
       /*      {

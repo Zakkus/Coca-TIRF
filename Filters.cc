@@ -493,7 +493,7 @@ std::map<int, int> ChooseCompo(SDL_Surface* img)
 		{
 			rgb = getRGB(img, i, j);
 			std::map<int, int>::iterator it = compos.find(rgb[2] * 1000000 + rgb[1] * 1000 + rgb[0]);
-			if (!it != compos.end())
+			if (it != compos.end())
 				it->second = it->second + 1;
 			else
 				compos[rgb[2] * 1000000 + rgb[1] * 1000 + rgb[0]] = 1;
