@@ -807,7 +807,10 @@ float CheckPercent(SDL_Surface* img, int xmin, int ymin, int l, int L)
 			if (black == 1 && getRGB(img, i, j)[0] == 255)
 				tmpwhite++;
 			if (black == 1 && getRGB(img,i,j)[0] != 255)
+			{
 				nbwhite += tmpwhite;
+				tmpwhite = 0;
+			}
 		}
 	}
 	std::cout << "nbwhite: " << nbwhite << std::endl;
