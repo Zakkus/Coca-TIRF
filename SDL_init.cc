@@ -3,15 +3,14 @@
 SDL_Window* createWindow()
 {
     SDL_Window *window;
-    //Start SDL
     SDL_Init(SDL_INIT_EVERYTHING);
     window = SDL_CreateWindow
-        ("An SDL2 window",                  // window title
-         SDL_WINDOWPOS_UNDEFINED,           // initial x position
-         SDL_WINDOWPOS_UNDEFINED,           // initial y position
-         640,                               // width, in pixels
-         480,                               // height, in pixels
-         SDL_WINDOW_OPENGL                  // flags
+        ("An SDL2 window",
+         SDL_WINDOWPOS_UNDEFINED,
+         SDL_WINDOWPOS_UNDEFINED,
+         640,
+         480,
+         SDL_WINDOW_OPENGL
         );
     return window;
 }
@@ -33,23 +32,9 @@ void displayImage(SDL_Window* window, SDL_Surface* image)
     SDL_Delay(1000);
 }
 
-//pompé sur le site du zéro
-/*getPixel : permet de récupérer la couleur d'un pixel
-  Paramètres d'entrée/sortie :
-  SDL_Surface *surface : la surface sur laquelle on va récupérer la couleur d'un pixel
-  int x : la coordonnée en x du pixel à récupérer
-  int y : la coordonnée en y du pixel à récupérer
-
-  Uint32 resultat : la fonction renvoie le pixel aux coordonnées (x,y) dans la surface
-  */
 Uint32 getPixel(SDL_Surface *surface, int x, int y)
 {
-    /*nbOctetsParPixel représente le nombre d'octets utilisés pour stocker un pixel.
-      En multipliant ce nombre d'octets par 8 (un octet = 8 bits), on obtient la profondeur de couleur
-      de l'image : 8, 16, 24 ou 32 bits.*/
     int bytesPerPixel = surface->format->BytesPerPixel;
-    /* Ici p est l'adresse du pixel que l'on veut connaitre */
-    /*surface->pixels contient l'adresse du premier pixel de l'image*/
     Uint8 *p = (Uint8 *)surface->pixels + y * surface->pitch + x * bytesPerPixel;
     switch (bytesPerPixel)
     {
@@ -71,13 +56,7 @@ Uint32 getPixel(SDL_Surface *surface, int x, int y)
 
 void setPixel(SDL_Surface *surface, int x, int y, Uint32 pixel)
 {
-    //courtesy to siteduzero
-    /*nbOctetsParPixel représente le nombre d'octets utilisés pour stocker un pixel.
-      En multipliant ce nombre d'octets par 8 (un octet = 8 bits), on obtient la profondeur de couleur
-      de l'image : 8, 16, 24 ou 32 bits.*/
     int bytesPerPixel = surface->format->BytesPerPixel;
-    /*Ici p est l'adresse du pixel que l'on veut modifier*/
-    /*surface->pixels contient l'adresse du premier pixel de l'image*/
     Uint8 *p = (Uint8 *)surface->pixels + y * surface->pitch + x * bytesPerPixel;
     switch (bytesPerPixel)
     {
@@ -88,7 +67,6 @@ void setPixel(SDL_Surface *surface, int x, int y, Uint32 pixel)
             *(Uint16 *)p = pixel;
             break;
         case 3:
-            /*Suivant l'architecture de la machine*/
             if (SDL_BYTEORDER == SDL_BIG_ENDIAN)
             {
                 p[0] = (pixel >> 16) & 0xff;

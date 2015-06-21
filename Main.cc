@@ -2,6 +2,7 @@
 #include"Filters.hh"
 #include"Utils.hh"
 #include<cstdlib>
+
 int main(int argc, char* argv[])
 {
 
@@ -27,17 +28,17 @@ int main(int argc, char* argv[])
     int i = 0;
     bool done = false;
     std::vector<std::tuple<int,std::pair<float,float>, int,int,int,int> > percents;
-	std::map<int, int> compos = ChooseCompo(image);
+    std::map<int, int> compos = ChooseCompo(image);
     while (i < 5)
     {
-		SDL_Surface* tmp = SDL_CreateRGBSurface(0,image->w,image->h,32,0,0,0,0);
-		SDL_BlitSurface(image, NULL, tmp, NULL);
-		std::pair<int,int> p = GetMaxCompo(compos);
+        SDL_Surface* tmp = SDL_CreateRGBSurface(0,image->w,image->h,32,0,0,0,0);
+        SDL_BlitSurface(image, NULL, tmp, NULL);
+        std::pair<int,int> p = GetMaxCompo(compos);
 
-		std::vector<int> compo = std::vector<int>();
-		compo.push_back(p.first % 1000);
-		compo.push_back((p.first / 1000) % 1000);
-		compo.push_back(p.first / 1000000);
+        std::vector<int> compo = std::vector<int>();
+        compo.push_back(p.first % 1000);
+        compo.push_back((p.first / 1000) % 1000);
+        compo.push_back(p.first / 1000000);
         ColorCompo(tmp, compo);
         int min_left, min_up;
 
@@ -50,7 +51,6 @@ int main(int argc, char* argv[])
         float white1 = CheckPercent(tmp, min_left, min_up, l, L);
         percents.push_back(std::make_tuple(com,std::make_pair(white1,white2),
                            L,l,min_left,min_up));
-		displayImage(createWindow(), white_image);
 
         compos.erase(p.first);
         i++;
