@@ -67,8 +67,8 @@ int main(int argc, char* argv[])
 
         //frame_component(image, final_image, L, l);
         int com = CheckCompo(L,l);
-        float white = CheckPercent(image, min_left, min_up, l, L);
-		if (InnerWhite(image, min_left, min_up, l, L))
+        float white = CheckPercent(tmp, min_left, min_up, l, L);
+		if (InnerWhite(tmp, min_left, min_up, l, L))
 			percents.push_back(std::make_tuple(com,white,L,l,min_left,min_up));
 
       /*      {
@@ -79,7 +79,7 @@ int main(int argc, char* argv[])
         i++;
     }
 
-    for (i = 0; i < 5; i++)
+    for (i = 0; i < percents.size(); i++)
     {
         float white = std::get<1>(percents[i]);
         int proportion = std::get<0>(percents[i]);
