@@ -9,7 +9,6 @@ void frame_component(SDL_Surface *image, SDL_Surface *final_image, int largeur, 
         {
             if (getRGB(image, i, j)[0] == 0)
             {
-                std::cout << i << " " << j << std::endl;
                 draw_rectangle(final_image, largeur, longueur, i, j);
                 return;
             }
@@ -167,10 +166,7 @@ void sobelFilter(SDL_Surface* image)
 
             gray = std::abs(sx) + std::abs(sy);
 
-            /*if (gray>200)
-              gray = 255;
-              else if (gray<100)
-              gray = 0;*/
+           
             gray = 255 - gray;
 
             setPixel(image, i, j, SDL_MapRGB(image->format,
@@ -242,10 +238,7 @@ void findRectangle(SDL_Surface* image)
                 }
                 if (!(rgb4[1] <= 100 && rgb4[2] <= 100 && rgb4[0] > 100) &&
                         !(rgb5[1] <= 100 && rgb5[2] <= 100 && rgb5[0] > 100) &&
-                        !(rgb6[1] <= 100 && rgb6[2] <= 100 && rgb6[0] > 100)/* &&
-                                                                               (rgb1[1] <= 100 && rgb1[2] <= 100 && rgb1[0] > 100) &&
-                                                                               (rgb2[1] <= 100 && rgb2[2] <= 100 && rgb2[0] > 100) &&
-                                                                               (rgb3[1] <= 100 && rgb3[2] <= 100 && rgb3[0] > 100)*/)
+                        !(rgb6[1] <= 100 && rgb6[2] <= 100 && rgb6[0] > 100))
                 {
                     int y = coordsList.back();
                     coordsList.pop_back();
@@ -277,7 +270,7 @@ void erode(SDL_Surface* image, int dimx, int dimy)
             rgb = getRGB(tmp, i, j);
             if (rgb[0] == rgb[1] && rgb[1] == rgb[2] && rgb[0] == 255)
             {
-                //std::cout << i << j << std::endl;
+
                 for (int x = -dimx; x <= dimx; x++)
                     for (int y = -dimy; y <= dimy; y++)
                     {
@@ -306,7 +299,7 @@ void dilate(SDL_Surface* image, int dimx, int dimy)
                 {
                     for (int y = -dimy; y <= dimy; y++)
                     {
-                        //std::cout << "in" <<std::endl;
+
                         setPixel(image, x + i, y + j, SDL_MapRGB(image->format, 0, 0, 0));
                     }
                 }
@@ -321,7 +314,6 @@ void MaxCompo(SDL_Surface* image)
 {
     int width = image->w;
     int height = image->h;
-    //SDL_Surface* tmp = new SDL_Surface(*image);
     int n1 = 0;
     int n2 = 0;
     int n3 = 0;
@@ -333,9 +325,7 @@ void MaxCompo(SDL_Surface* image)
                 n1++;
                 if (n1 / 254 == 0)
                 {
-                    ///Compo_lr(image, i, j, n1, n2, n3);
                     Compo_tr(image, i, j, n1, n2, n3);
-                    //Compo_bl(image,i,j,n1,n2,n3);
                 }
                 else
                 {
@@ -343,9 +333,7 @@ void MaxCompo(SDL_Surface* image)
                     n1 = n1 % 254;
                     if (n2 / 254 == 0)
                     {
-                        //Compo_lr(image, i, j, n1, n2, n3);
                         Compo_tr(image, i, j, n1, n2, n3);
-                        //Compo_bl(image,i,j,n1,n2,n3);
                     }
                     else
                     {
@@ -353,9 +341,7 @@ void MaxCompo(SDL_Surface* image)
                         n2 = n2 % 254;
                         if (n3 / 254 == 0)
                         {
-                            //Compo_lr(image, i, j, n1, n2, n3);
                             Compo_tr(image, i, j, n1, n2, n3);
-                            //Compo_bl(image,i,j,n1,n2,n3);
                         }
                     }
                 }
@@ -369,8 +355,7 @@ void Compo_lr(SDL_Surface* image, int i, int j, int n1, int n2, int n3)
 {
     int width = image->w;
     int height = image->h;
-    //std::vector<Uint8> rgb = std::vector<Uint8>();
-    //rgb = getRGB(image,i,j);
+
     int c1 = getRGB(image,i,j)[0];
     int c2 = getRGB(image,i,j)[1];
     int c3 = getRGB(image,i,j)[2];
@@ -384,7 +369,6 @@ void Compo_lr(SDL_Surface* image, int i, int j, int n1, int n2, int n3)
                 Compo_tb(image, k, j - 1, n1, n2, n3);
             if (j + 1 < height)
                 Compo_tb(image, k, j + 1, n1, n2, n3);
-            //Compo_tb(image, k, j, n1, n2, n3);
         }
         for (int l = i + 1; l < width && getRGB(image, l, j)[0] == 0 && getRGB(image, l, j)[1] == 0 && getRGB(image, l, j)[2] == 0; l++)
         {
@@ -393,7 +377,6 @@ void Compo_lr(SDL_Surface* image, int i, int j, int n1, int n2, int n3)
                 Compo_tb(image, l, j - 1, n1, n2, n3);
             if (j + 1 < height)
                 Compo_tb(image, l, j + 1, n1, n2, n3);
-            //Compo_tb(image, l, j, n1, n2, n3);
         }
     }
 }
@@ -415,7 +398,6 @@ void Compo_tb(SDL_Surface* image, int i, int j, int n1, int n2, int n3)
                 Compo_lr(image, i - 1, k, n1, n2, n3);
             if (i + 1 < height)
                 Compo_lr(image, i + 1, k, n1, n2, n3);
-            //Compo_lr(image, i, k, n1, n2, n3);
         }
         for (int l = j + 1; l < height && getRGB(image, i, l)[0] == 0 && getRGB(image, i, l)[1] == 0 && getRGB(image, i, l)[2] == 0; l++)
         {
@@ -424,7 +406,6 @@ void Compo_tb(SDL_Surface* image, int i, int j, int n1, int n2, int n3)
                 Compo_lr(image, i - 1, l, n1, n2, n3);
             if (j + 1 < height)
                 Compo_lr(image, i + 1, l, n1, n2, n3);
-            //Compo_lr(image, i, l, n1, n2, n3);
         }
     }
 }
@@ -435,10 +416,6 @@ void Compo_tr(SDL_Surface* image, int i, int j, int n1, int n2, int n3)
     int height = image->h;
     int lastx = i - 1;
     int lasty = j - 1;
-    /*if (lastx >= 0 && getRGB(image, lastx, j)[0] != 255 && getRGB(image, lastx, j)[1] != 255 && getRGB(image, lastx, j)[2] != 255 && getRGB(image, lastx, j)[0] != n1 && getRGB(image, lastx, j)[1] != n2 && getRGB(image, lastx, j)[2] != n3)
-      Compo_bl(image, lastx, j, n1, n2, n3);
-      if (lasty >= 0 && getRGB(image, i, lasty)[0] != 255 && getRGB(image, i, lasty)[1] != 255 && getRGB(image, i, lasty)[2] != 255 && getRGB(image, i, lasty)[0] != n1 && getRGB(image, i, lasty)[1] != n2 && getRGB(image, i, lasty)[2] != n3)
-      Compo_bl(image, i, lasty, n1, n2, n3);*/
     for (int k = i; k < width && getRGB(image, k, j)[0] != 255 && getRGB(image, k, j)[1] != 255 && getRGB(image, k, j)[2] != 255 && getRGB(image, k, j)[0] != n1 && getRGB(image, k, j)[1] != n2 && getRGB(image, k, j)[2] != n3;k++)
     {
         setPixel(image, k, j, SDL_MapRGB(image->format, n1, n2, n3));
@@ -560,9 +537,9 @@ int CheckCompo(int l, int L)
     if (l == 0 || L == 0)
         return false;
     if (l > L)
-        return (100 * L) / l; // >51 && (100*L) / l < 70;
+        return (100 * L) / l; 
     else
-        return (100 * l) / L; // >51 && (100*l) / L < 70;
+        return (100 * l) / L;
     return l > 10 && L > 10 && ((l * 2 >= L && l  <= L) || (L * 2 >= l && L <= l));
 }
 
@@ -588,7 +565,6 @@ int getL(SDL_Surface* img, int &min_left)
                 if (getRGB(img,k,j)[0] == 0)
                 {
                     L += k - i;
-                    //std::cout << k -i << std::endl;
                     i = k;
                     xmin = std::min(xmin, k);
                 }
@@ -633,30 +609,7 @@ int getl(SDL_Surface* img, int &min_up)
     return lmax;
 }
 
-//Supposition qu'il n'y a qu'une composante affichée et qu'elle est liée(aucun blanc à l'intérieur passage préalable d'une ouverture très grande)
-/*void TraceRekt(SDL_Surface* img)//Peut etre prendre une seconde image étant celle de base sur laquelle tracer le rect
-  {
-  int width = img->w;
-  int height = img->h;
-  for (int i = 0; i < width; i++)
-  for (int j = 0; j < height; j++)
-  {
-  if (getRGB(img, i, j)[0] == 0)
-  {
-  int L = getL(img, i, j);
-  int l = getl(img, i, j);
-  if (CheckCompo(l, L))
-  {
-  Hline(img, i, j, i + l);
-  Hline(img, i, j + L, l);
-  Vline(img, i, j, L);
-  Vline(img, i + l, j, L);
-  }
-  break;
-  }
-  }
-  }
-  */
+
 
 std::vector<std::pair<int, int> > Findall(SDL_Surface* img, int n1, int n2, int n3)
 {
@@ -829,11 +782,10 @@ float CheckPercent(SDL_Surface* img, int xmin, int ymin, int l, int L)
 			}
 		}
 	}
-	std::cout << "nbwhite: " << nbwhite << std::endl;
-	std::cout << "L * l=" << L*l << std::endl;
+
 	double percent = (double)nbwhite / (double)(l * L);
-    std::cout << "percent: " << percent << std::endl;
-	return percent;// <= 0.5 && percent >= 0.23;
+
+	return percent;
 }
 
 void SupprCompo(SDL_Surface* image, std::vector<int> compo)

@@ -4,26 +4,13 @@
 #include<cstdlib>
 int main(int argc, char* argv[])
 {
-    //SDL_Surface* image = loadImage("C:/Users/Zakaria/Pictures/molester-man.jpg");
-    //SDL_Surface* image = loadImage("D:/Work/TIRF/Coca/Coca/simple/HPIM4430.JPG");
-    //SDL_Surface* image = loadImage("D:/Work/TIRF/Coca/Coca/simple/HPIM4433.JPG");
+
     SDL_Surface* image = loadImage(argv[1]);
     SDL_Surface* final_image = loadImage(argv[1]);
     SDL_Surface* white_image = loadImage(argv[1]);
-    //	SDL_Surface* save = loadImage(argv[1]);
-    //SDL_Surface* image = loadImage("D:/Work/TIRF/Coca/Coca/moins_simple/HPIM4422.JPG");
-    //grayScale(image);
-    //sobelFilter(image);
-    //laplaceFilter(image);
 
-    //findRectangle(image);
-
-    //SDL_Surface* image = loadImage("D:/Work/TIRF/can.jpg");
     redFilter(image);
-    //    redFilter(save);
 
-    //   Red_to_Black(image);
-    //    Red_to_Black(save);
 
     dilate(image,2,0);
     erode(image, 0,4);
@@ -35,12 +22,8 @@ int main(int argc, char* argv[])
 
     dilate(image,5,0);
     erode(image,5,0);
-    //    more_frontier(image);
-    //
 
-    //MaxCompo(image);
     Compo(image);
-   // displayImage(createWindow(), image);
     int i = 0;
     bool done = false;
     std::vector<std::tuple<int,std::pair<float,float>, int,int,int,int> > percents;
@@ -51,32 +34,16 @@ int main(int argc, char* argv[])
 		SDL_BlitSurface(image, NULL, tmp, NULL);
 		std::pair<int,int> p = GetMaxCompo(compos);
 
-        //std::cout << compo->at(0) << std::endl;
-        //std::cout << compo->at(1) << std::endl;
 		std::vector<int> compo = std::vector<int>();
-		std::cout << "pfirst: " << p.first << std::endl;
-		int c1 = p.first % 1000;
-		std::cout << "c1: " << c1 << std::endl;
-		int c2 = (p.first / 1000) % 1000;
-		std::cout << "c2: " << c2 << std::endl;
-		int c3 = p.first / 1000000;
-		std::cout << "c3: " << c3 << std::endl;
 		compo.push_back(p.first % 1000);
 		compo.push_back((p.first / 1000) % 1000);
 		compo.push_back(p.first / 1000000);
         ColorCompo(tmp, compo);
-	//	displayImage(createWindow(), tmp);
         int min_left, min_up;
 
         int L = getL(tmp, min_left);
-        std::cout << L << std::endl;
         int l = getl(tmp, min_up);
-        std::cout << l <<std::endl;
 
-        std::cout << "coords: " << min_left << " " << min_up << std::endl;
-        std::cout << CheckCompo(L, l) << std::endl;
-
-        //frame_component(image, final_image, L, l);
         int com = CheckCompo(L,l);
         whiteFilter(white_image, L, l, min_left, min_up);
         float white2 = CheckPercent(white_image, min_left, min_up, l, L);
@@ -85,10 +52,6 @@ int main(int argc, char* argv[])
                            L,l,min_left,min_up));
 		displayImage(createWindow(), white_image);
 
-      /*      {
-                draw_rectangle(final_image, L, l, min_left, min_up);
-                break;
-            }*/
         compos.erase(p.first);
         i++;
     }
