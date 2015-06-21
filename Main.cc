@@ -52,6 +52,12 @@ int main(int argc, char* argv[])
         //std::cout << compo->at(1) << std::endl;
 		std::vector<int> compo = std::vector<int>();
 		std::cout << "pfirst: " << p.first << std::endl;
+		int c1 = p.first % 1000;
+		std::cout << "c1: " << c1 << std::endl;
+		int c2 = (p.first / 1000) % 1000;
+		std::cout << "c2: " << c2 << std::endl;
+		int c3 = p.first / 1000000;
+		std::cout << "c3: " << c3 << std::endl;
 		compo.push_back(p.first % 1000);
 		compo.push_back((p.first / 1000) % 1000);
 		compo.push_back(p.first / 1000000);
