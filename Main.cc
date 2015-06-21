@@ -39,7 +39,7 @@ int main(int argc, char* argv[])
 
     //MaxCompo(image);
     Compo(image);
-    displayImage(createWindow(), image);
+   // displayImage(createWindow(), image);
     int i = 0;
     bool done = false;
     std::vector<std::tuple<int,float, int,int,int,int> > percents;
@@ -64,7 +64,7 @@ int main(int argc, char* argv[])
 		compo.push_back((p.first / 1000) % 1000);
 		compo.push_back(p.first / 1000000);
         ColorCompo(tmp, compo);
-		displayImage(createWindow(), tmp);
+	//	displayImage(createWindow(), tmp);
         int min_left, min_up;
 
         int L = getL(tmp, min_left);
@@ -78,8 +78,7 @@ int main(int argc, char* argv[])
         //frame_component(image, final_image, L, l);
         int com = CheckCompo(L,l);
         float white = CheckPercent(tmp, min_left, min_up, l, L);
-		if (InnerWhite(tmp, min_left, min_up, l, L))
-			percents.push_back(std::make_tuple(com,white,L,l,min_left,min_up));
+        percents.push_back(std::make_tuple(com,white,L,l,min_left,min_up));
 
       /*      {
                 draw_rectangle(final_image, L, l, min_left, min_up);
@@ -97,7 +96,7 @@ int main(int argc, char* argv[])
         int min_left = std::get<4>(percents[i]), min_up = std::get<5>(percents[i]);
         if (white <= 0.5 && white >= 0.23)
         {
-            if (proportion)
+            if (proportion <= 65 && proportion >= 55)
             {
                 draw_rectangle(final_image, L, l, min_left, min_up);
                 done = true;
@@ -108,7 +107,7 @@ int main(int argc, char* argv[])
             percents.erase(percents.begin()+i);
     }
 
-    if (!done)
+    if (!done && !percents.empty())
     {
         std::sort(begin(percents), end(percents),
                 [](std::tuple<int,float,int,int,int,int> const &t1,
