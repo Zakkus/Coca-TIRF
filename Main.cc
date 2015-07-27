@@ -6,7 +6,7 @@ int main(int argc, char* argv[])
     SDL_Surface* final_image = loadImage(argv[1]);
     SDL_Surface* white_image = loadImage(argv[1]);
 
-	tbb::task_scheduler_init init;
+	tbb::task_scheduler_init init(1);
 
     redFilter(image);
 
