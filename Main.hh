@@ -70,6 +70,8 @@ class par_2{
 						break;
 					}
 				}
+                else
+                    std::get<0>((*percents)[i]) = 0;
 				/*else
 				{
 					percents->erase(percents->begin()+i);

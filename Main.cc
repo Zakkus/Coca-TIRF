@@ -77,7 +77,15 @@ int main(int argc, char* argv[])
             i--;
         }
     }*/
-	tbb::parallel_for(tbb::blocked_range<int>(0, percents.size()), par_2(final_image, &done, &percents));
+
+     tbb::parallel_for(tbb::blocked_range<int>(0, percents.size()), par_2(final_image, &done, &percents));
+
+
+
+     for (i = 0; i < percents.size(); i++)
+       if (std::get<2>(percents[i]) == 0)
+           percents.erase(percents.begin()+i);
+
 
     if (!done && !percents.empty())
     {
