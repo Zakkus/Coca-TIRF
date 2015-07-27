@@ -6,7 +6,7 @@ int main(int argc, char* argv[])
     SDL_Surface* final_image = loadImage(argv[1]);
     SDL_Surface* white_image = loadImage(argv[1]);
 
-	tbb::task_scheduler_init init;
+	tbb::task_scheduler_init init(1);
 
     redFilter(image);
 
@@ -55,7 +55,7 @@ int main(int argc, char* argv[])
         i++;
     }*/
 
-    for (i = 0; i < percents.size(); i++)
+   /* for (i = 0; i < percents.size(); i++)
     {
         std::pair<float,float> white = std::get<1>(percents[i]);
         int proportion = std::get<0>(percents[i]);
@@ -76,7 +76,8 @@ int main(int argc, char* argv[])
             percents.erase(percents.begin()+i);
             i--;
         }
-    }
+    }*/
+	tbb::parallel_for(tbb::blocked_range<int>(0, percents.size()), par_2(final_image, &done, &percents));
 
     if (!done && !percents.empty())
     {

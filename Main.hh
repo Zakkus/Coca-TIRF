@@ -35,12 +35,12 @@ class par_1{
 							L,l,min_left,min_up));
 			}
 		}
-		
+
 
 		par_1(SDL_Surface* img, SDL_Surface* wimg, std::map<int, int>* m, 
-			std::vector<std::tuple<int,std::pair<float,float>, int,int,int,int> >* p):
-		image(img), white_image(wimg), compos(m), percents(p)
-		{}
+				std::vector<std::tuple<int,std::pair<float,float>, int,int,int,int> >* p):
+			image(img), white_image(wimg), compos(m), percents(p)
+	{}
 
 	private:
 		SDL_Surface* image;
@@ -49,4 +49,43 @@ class par_1{
 		std::vector<std::tuple<int,std::pair<float,float>, int,int,int,int> >* percents;
 };
 
+
+class par_2{
+	public:
+		void operator()(const tbb::blocked_range<int>& r)const
+		{
+			for (int i = r.begin(); i != r.end(); i++)
+			{
+				std::pair<float,float> white = std::get<1>((*percents)[i]);
+				int proportion = std::get<0>((*percents)[i]);
+				int L = std::get<2>((*percents)[i]), l = std::get<3>((*percents)[i]);
+				int min_left = std::get<4>((*percents)[i]), min_up = std::get<5>((*percents)[i]);
+				if ((white.second <= 0.271 && white.second > 0.1 && white.first < 0.34 && white.first > 0.1) ||
+						(white.first <= 0.271 && white.first > 0.12 && white.second > 0.05))
+				{
+					if (proportion <= 65 && proportion >= 55)
+					{
+						draw_rectangle(final_image, L, l, min_left, min_up);
+						*done = true;
+						break;
+					}
+				}
+				/*else
+				{
+					percents->erase(percents->begin()+i);
+					i--;
+				}*/
+			}
+		}
+		
+		par_2(SDL_Surface* img, bool *d,
+			std::vector<std::tuple<int,std::pair<float,float>, int,int,int,int> >* p):
+		final_image(img), percents(p), done(d)
+		{}
+
+	private:
+		SDL_Surface* final_image;
+		std::vector<std::tuple<int,std::pair<float,float>, int,int,int,int> >* percents;
+		bool *done;
+};
 #endif
