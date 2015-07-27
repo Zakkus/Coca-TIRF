@@ -5,10 +5,11 @@
 
 int main(int argc, char* argv[])
 {
-
     SDL_Surface* image = loadImage(argv[1]);
     SDL_Surface* final_image = loadImage(argv[1]);
     SDL_Surface* white_image = loadImage(argv[1]);
+
+	tbb::task_scheduler_init init;
 
     redFilter(image);
 
@@ -24,7 +25,7 @@ int main(int argc, char* argv[])
     dilate(image,5,0);
     erode(image,5,0);
 
-    Compo(image);
+ /*   Compo(image);
     int i = 0;
     bool done = false;
     std::vector<std::tuple<int,std::pair<float,float>, int,int,int,int> > percents;
@@ -97,11 +98,11 @@ int main(int argc, char* argv[])
             draw_rectangle(final_image, L, l, min_left, min_up);
     }
 
-
+*/
     SDL_Window* window = createWindow();
     if (window == NULL)
         return 1;
-    displayImage(window, final_image);
+    displayImage(window, image);
     SDL_Delay(5000);
 
     return 0;

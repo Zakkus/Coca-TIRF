@@ -5,22 +5,14 @@ void redFilter(SDL_Surface* image)
     int width = image->w;
     int height = image->h;
     std::vector<Uint8> rgb;
-    SDL_Surface* tmp = new SDL_Surface(*image);
+    //SDL_Surface* tmp = new SDL_Surface(*image);
 
-    for (int i = 0; i < width; i++)
-        for (int j = 0; j < height; j++)
-        {
-            rgb = getRGB(image, i, j);
-            setPixel(image, i, j, SDL_MapRGB(image->format, 255, 0, 0));
-            if (!(rgb[1] <= 70 && rgb[2] <= 70 && rgb[0] > 100))
-                setPixel(image, i, j, SDL_MapRGB(image->format, 255, 255, 255));
-            if (rgb[1] >= 200 && rgb[2] >= 200 && rgb[0] >= 200)
-                setPixel(image, i, j, SDL_MapRGB(image->format, 255, 255, 255));
-            rgb = getRGB(image, i, j);
-            if (rgb[1] == 0)
-                setPixel(image, i, j, SDL_MapRGB(image->format, 0, 0, 0));
-        }
-    delete tmp;
+    
+		par_dilate par = par_dilate(image, width);
+        parallel_for(tbb::blocked_range<int>(0, height * width),
+			par);
+
+  //delete tmp;
 }
 
 void whiteFilter(SDL_Surface* image, int L, int l, int min_left, int min_up)
@@ -28,16 +20,17 @@ void whiteFilter(SDL_Surface* image, int L, int l, int min_left, int min_up)
     int width = image->w;
     int height = image->h;
     std::vector<Uint8> rgb;
-    SDL_Surface* tmp = new SDL_Surface(*image);
+    //SDL_Surface* tmp = new SDL_Surface(*image);
 
     for (int i = min_left; i < min_left + L; i++)
-        for (int j = min_up; j < min_up + l; j++)
+		parallel_for(tbb::blocked_range<int>(min_up, min_up + l), par_white(image, i));
+        /*for (int j = min_up; j < min_up + l; j++)
         {
             rgb = getRGB(image, i, j);
             if (rgb[1] >= 120 && rgb[2] >= 120 && rgb[0] >= 120)
                 setPixel(image, i, j, SDL_MapRGB(image->format, 255, 255, 255));
-        }
-    delete tmp;
+        }*/
+    //delete tmp;
 }
 
 //erode et dilate ont besoin d'une SDL_Surface binarisée
@@ -49,17 +42,22 @@ void erode(SDL_Surface* image, int dimx, int dimy)
     SDL_Surface* tmp = SDL_CreateRGBSurface(0,width,height,32,0,0,0,0);
     SDL_BlitSurface(image, NULL, tmp, NULL);
     std::vector<Uint8> rgb = std::vector<Uint8>();
-    for (int j = dimy; j < height - dimy; j++)
-        for (int i = dimx; i < width - dimx; i++)
+        parallel_for(tbb::blocked_range<int>(0, (width - 2 * dimx) * (height - 2 * dimy)), par_setpix(tmp, image, dimx, dimy, 255, SDL_MapRGB(image->format, 255, 255, 255)));
+		/*for (int i = dimx; i < width - dimx; i++)
         {
             rgb = getRGB(tmp, i, j);
             if (rgb[0] == rgb[1] && rgb[1] == rgb[2] && rgb[0] == 255)
                 for (int x = -dimx; x <= dimx; x++)
-                    for (int y = -dimy; y <= dimy; y++)
-                        setPixel(image, x + i, y + j, SDL_MapRGB(image->format, 255, 255, 255));
-        }
-    delete tmp;
+					for (int y = -dimy; y <= dimy; y++)
+						setPixel(image, x+i, y+j, SDL_MapRGB(image->format, 255,255,255));
+	//				parallel_for (tbb::blocked_range<int>(-dimy, dimy), 
+	//			par_setpix(image, x, i, j, SDL_MapRGB(image->format, 255,255,255)));
+  
+        }*/
+ //   delete tmp;
 }
+
+
 
 void dilate(SDL_Surface* image, int dimx, int dimy)
 {
@@ -68,16 +66,19 @@ void dilate(SDL_Surface* image, int dimx, int dimy)
     SDL_Surface* tmp = SDL_CreateRGBSurface(0,width,height,32,0,0,0,0);
     SDL_BlitSurface(image, NULL, tmp, NULL);
     std::vector<Uint8> rgb = std::vector<Uint8>();
-    for (int j = dimy; j < height - dimy; j++)
-        for (int i = dimx; i < width - dimx; i++)
+    //for (int j = dimy; j < height - dimy; j++)
+        parallel_for(tbb::blocked_range<int>(0, (width - 2 * dimx) * (height - 2 * dimy)),par_setpix(tmp, image, dimx, dimy, 0, SDL_MapRGB(image->format, 0,0,0)));
+		/*for (int i = dimx; i < width - dimx; i++)
         {
             rgb = getRGB(tmp, i, j);
             if (rgb[0] == rgb[1] && rgb[1] == rgb[2] && rgb[0] == 0)
                 for (int x = -dimx; x <= dimx; x++)
-                    for (int y = -dimy; y <= dimy; y++)
+					for (int y = -dimy; y <= dimy; y++)
+           //         parallel_for (tbb::blocked_range<int>(-dimy, dimy + 1), 
+			//	par_setpix(image, x, i, j, SDL_MapRGB(image->format, 0,0,0)));
                         setPixel(image, x + i, y + j, SDL_MapRGB(image->format, 0, 0, 0));
-        }
-    delete tmp;
+        }*/
+    //delete tmp;
 }
 
 //Image binarisée donne un numéro sur chaque composante
@@ -291,9 +292,10 @@ void ColorCompo(SDL_Surface* img, std::vector<int> compo)
     int c2 = compo[1];
     int c1 = compo[0];
     std::vector<Uint8> rgb = std::vector<Uint8>();
-    SDL_Surface* tmp = SDL_CreateRGBSurface(0,width,height,32,0,0,0,0);
-    SDL_BlitSurface(img, NULL, tmp, NULL);
-    for (int i = 0; i < width; i++)
+    //SDL_Surface* tmp = SDL_CreateRGBSurface(0,width,height,32,0,0,0,0);
+    //SDL_BlitSurface(img, NULL, tmp, NULL);
+	parallel_for(tbb::blocked_range<int>(0, width*height), par_color(img, width, c1,c2,c3));
+    /*for (int i = 0; i < width; i++)
         for (int j = 0; j < height; j++)
         {
             rgb = getRGB(img,i,j);
@@ -301,8 +303,8 @@ void ColorCompo(SDL_Surface* img, std::vector<int> compo)
                 setPixel(img, i, j, SDL_MapRGB(img->format, 0,0,0));
             else
                 setPixel(img, i, j, SDL_MapRGB(img->format, 255, 255, 255));
-        }
-    delete tmp;
+        }*/
+    //delete tmp;
 }
 
 int CheckCompo(int l, int L)
