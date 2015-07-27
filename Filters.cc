@@ -272,7 +272,7 @@ std::map<int, int> ChooseCompo(SDL_Surface* img)
     return compos;
 }
 
-std::pair<int, int> GetMaxCompo(std::map<int, int> compos)
+std::pair<int, int> GetMaxCompo(std::map<int, int>& compos)
 {
     std::pair<int, int> max = std::make_pair(0,0);
     for (std::map<int, int>::iterator it = compos.begin(); it != compos.end(); it++)
@@ -281,6 +281,7 @@ std::pair<int, int> GetMaxCompo(std::map<int, int> compos)
         if (m != max.second)
             max = *it;
     }
+	compos.erase(max.first);
     return max;
 }
 

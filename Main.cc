@@ -1,7 +1,4 @@
-#include"SDL_init.hh"
-#include"Filters.hh"
-#include"Utils.hh"
-#include<cstdlib>
+#include "Main.hh"
 
 int main(int argc, char* argv[])
 {
@@ -25,12 +22,13 @@ int main(int argc, char* argv[])
     dilate(image,5,0);
     erode(image,5,0);
 
- /*   Compo(image);
+    Compo(image);
     int i = 0;
     bool done = false;
     std::vector<std::tuple<int,std::pair<float,float>, int,int,int,int> > percents;
     std::map<int, int> compos = ChooseCompo(image);
-    while (i < 5)
+	tbb:parallel_for(tbb::blocked_range<int>(0,5), par_1(image, white_image, &compos, &percents));
+    /*while (i < 5)
     {
         SDL_Surface* tmp = SDL_CreateRGBSurface(0,image->w,image->h,32,0,0,0,0);
         SDL_BlitSurface(image, NULL, tmp, NULL);
@@ -53,9 +51,9 @@ int main(int argc, char* argv[])
         percents.push_back(std::make_tuple(com,std::make_pair(white1,white2),
                            L,l,min_left,min_up));
 
-        compos.erase(p.first);
+        //compos.erase(p.first);
         i++;
-    }
+    }*/
 
     for (i = 0; i < percents.size(); i++)
     {
@@ -98,11 +96,11 @@ int main(int argc, char* argv[])
             draw_rectangle(final_image, L, l, min_left, min_up);
     }
 
-*/
+
     SDL_Window* window = createWindow();
     if (window == NULL)
         return 1;
-    displayImage(window, image);
+    displayImage(window, final_image);
     SDL_Delay(5000);
 
     return 0;
