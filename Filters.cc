@@ -408,15 +408,14 @@ void Compo(SDL_Surface* image)
 {
     int width = image->w;
     int height = image->h;
-    std::vector<Uint8> rgbg;
-    std::vector<Uint8> rgbh;
     SDL_Surface* tmp = SDL_CreateRGBSurface(0,width,height,32,0,0,0,0);
     SDL_BlitSurface(image, NULL, tmp, NULL);
     int k = 0;
     int n1 = 0;
     int n2 = 0;
     int n3 = 0;
-    for (int j = 1; j < height; j++)
+	parallel_for(tbb::blocked_range<int>(0, (width - 1)*(height - 1)), par_compo(image, tmp, &n1, &n2, &n3));
+    /*for (int j = 1; j < height; j++)
         for (int i = 1; i < width; i++)
         {
             if (getRGB(tmp, i, j)[0] == 0)
@@ -468,7 +467,7 @@ void Compo(SDL_Surface* image)
                     }
                 }
             }
-        }
+        }*/
     while (k < 5)
     {
         for (int j = height - 2; j >= 0; j--)
