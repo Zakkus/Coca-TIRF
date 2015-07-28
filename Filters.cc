@@ -470,7 +470,8 @@ void Compo(SDL_Surface* image)
         }*/
     while (k < 5)
     {
-        for (int j = height - 2; j >= 0; j--)
+		parallel_for(tbb::blocked_range<int>(0, (width - 1) * (height - 1)), par_comp_ret(image, tmp));
+        /*for (int j = height - 2; j >= 0; j--)
             for (int i = width - 2; i >= 0; i--)
             {
                 if (getRGB(tmp, i, j)[0] == 0)
@@ -500,7 +501,7 @@ void Compo(SDL_Surface* image)
                     }
                 }
             }
-
+*/
         for (int j = 1; j < height; j++)
             for (int i = 1; i < width; i++)
             {
