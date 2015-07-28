@@ -502,7 +502,9 @@ void Compo(SDL_Surface* image)
                 }
             }
 */
-        for (int j = 1; j < height; j++)
+		parallel_for(tbb::blocked_range<int>(0, (height - 1) * (width - 1)), par_comp_al(image, tmp));
+
+/*        for (int j = 1; j < height; j++)
             for (int i = 1; i < width; i++)
             {
                 if (getRGB(tmp, i, j)[0] == 0)
@@ -531,7 +533,7 @@ void Compo(SDL_Surface* image)
                             setPixel(image, i, j, SDL_MapRGB(image->format, rgb2[0], rgb2[1], rgb2[2]));
                     }
                 }
-            }
+            }*/
         k++;
     }
 }

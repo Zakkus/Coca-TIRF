@@ -234,6 +234,52 @@ class par_comp_ret
 		SDL_Surface* tmp;
 };
 
+class par_comp_al
+{
+	public:
+		void operator()(const tbb::blocked_range<int>& r)const
+		{
+			for (int l = r.begin(); l != r.end(); l++)
+			{
+				int i = 1 + l % (image->w - 1);
+				int j = 1 + l / (image->w - 1);
+				if (getRGB(tmp, i, j)[0] == 0)
+				{
+					std::vector<Uint8> rgb1 = getRGB(image, i - 1, j);
+					std::vector<Uint8> rgb2 = getRGB(image, i ,j - 1);
+					if (rgb1[0] != 255 && rgb2[0] != 255)
+					{
+						int m = std::min(rgb1[2], rgb2[2]);
+						if (m == rgb1[2] && m == rgb2[2])
+						{
+							m = std::min(rgb1[1], rgb2[1]);
+							if (m == rgb1[1] && m == rgb2[1])
+							{
+								m = std::min(rgb1[0], rgb2[0]);
+								setPixel(image, i, j, SDL_MapRGB(image->format, m, rgb1[1], rgb1[2]));
+							}
+							else if (m == rgb1[1])
+								setPixel(image, i, j, SDL_MapRGB(image->format, rgb1[0], rgb1[1], rgb1[2]));
+							else
+								setPixel(image, i, j, SDL_MapRGB(image->format, rgb2[0], rgb2[1], rgb2[2]));
+						}
+						else if (m == rgb1[2])
+							setPixel(image, i, j, SDL_MapRGB(image->format, rgb1[0], rgb1[1], rgb1[2]));
+						else
+							setPixel(image, i, j, SDL_MapRGB(image->format, rgb2[0], rgb2[1], rgb2[2]));
+					}
+				}
+			}
+		}
+
+		par_comp_al(SDL_Surface* img, SDL_Surface* temp):image(img), tmp(temp)
+		{}
+
+	private:
+		SDL_Surface* image;
+		SDL_Surface* tmp;
+};
+
 void redFilter(SDL_Surface* image);
 void whiteFilter(SDL_Surface* image, int L, int l, int min_left, int min_up);
 void dilate(SDL_Surface* image, int dimx, int dimy);
