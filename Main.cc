@@ -6,7 +6,10 @@ int main(int argc, char* argv[])
     SDL_Surface* final_image = loadImage(argv[1]);
     SDL_Surface* white_image = loadImage(argv[1]);
 
-	tbb::task_scheduler_init init;
+    if (argc > 2 && argv[2] == "-par")
+        tbb::task_scheduler_init init;
+    else
+        tbb::task_scheduler_init init(1);
 
     redFilter(image);
 
@@ -31,9 +34,6 @@ int main(int argc, char* argv[])
    
 
 	tbb::parallel_for(tbb::blocked_range<int>(0, percents.size()), par_2(final_image, &done, &percents));
-
-
-
      for (i = 0; i < percents.size(); i++)
        if (std::get<2>(percents[i]) == 0)
            percents.erase(percents.begin()+i);
