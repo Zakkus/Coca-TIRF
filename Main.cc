@@ -6,7 +6,10 @@ int main(int argc, char* argv[])
     SDL_Surface* final_image = loadImage(argv[1]);
     SDL_Surface* white_image = loadImage(argv[1]);
 
-	tbb::task_scheduler_init init;
+    if (argc > 2 && argv[2] == "-par")
+        tbb::task_scheduler_init init;
+    else
+        tbb::task_scheduler_init init(1);
 
     redFilter(image);
 
@@ -27,7 +30,7 @@ int main(int argc, char* argv[])
     bool done = false;
     std::vector<std::tuple<int,std::pair<float,float>, int,int,int,int> > percents;
     std::map<int, int> compos = ChooseCompo(image);
-	tbb:parallel_for(tbb::blocked_range<int>(0,5), par_1(image, white_image, &compos, &percents));
+    tbb::parallel_for(tbb::blocked_range<int>(0,5), par_1(image, white_image, &compos, &percents));
     /*while (i < 5)
     {
         SDL_Surface* tmp = SDL_CreateRGBSurface(0,image->w,image->h,32,0,0,0,0);
@@ -79,8 +82,6 @@ int main(int argc, char* argv[])
     }*/
 
      tbb::parallel_for(tbb::blocked_range<int>(0, percents.size()), par_2(final_image, &done, &percents));
-
-
 
      for (i = 0; i < percents.size(); i++)
        if (std::get<2>(percents[i]) == 0)
